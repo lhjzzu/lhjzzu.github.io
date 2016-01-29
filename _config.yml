@@ -1,0 +1,64 @@
+# Site settings
+title: Just Do It!
+header-img: "img/facebook.jpg"
+tagline: "cn"  
+description: "刘华健|Do&Now"  
+baseurl: ""
+url: "http://www.lhjzzu"
+
+# About/contact
+owner: 
+  name: "lhjzzu"
+  email: 1822657131@qq.com
+  bio: "一切终会偿还!"
+
+# Data
+gavatar: http://admin.cfwh2008.com/upload/video_cover/20131210114530305.jpg
+favicon: img/favicon.png
+
+#douban_username: 
+#twitter_username:
+github_username: lhjzzu
+facebook_username: 
+weibo_username: lhjzzu 
+#zhihu_username:
+
+# Build settings  
+# use Github Flavored Markdown !important  
+# document: http://jekyllrb.com/docs/configuration/#kramdown  
+markdown: kramdown
+highlighter: pygments
+permalink: pretty
+paginate: 8
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+relative_permalinks: true
+
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Asia/Shanghai
+
+# Defaults for posts
+defaults:
+  -
+    scope: 
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "lhjzzu"
+      header-img: "img/facebook.jpg" # We don't want posts without a header image, that whould mean white on white
+
+# Comments 
+comments :
+  provider : duoshuo
+  duoshuo :
+    short_name : abc19911991
+  disqus :
+      short_name : lhjzzu
+
+# Analytics and webmaster tools stuff goes here
+#google_analytics: 
+#google_verify:
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+#bing_verify:
+
+# Links to include in footer navigation
