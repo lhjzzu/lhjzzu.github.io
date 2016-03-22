@@ -137,7 +137,9 @@ categories: blog
       
 
 ##Masonry原理
+
   1 主要的类及作用
+  
     * MASViewAttribute:视图的属性，包含一个视图（view）以及该视图的布局属性(layoutAttribute)
     * MASAttribute:对NSLayoutAttribute的重定义
     * MASLayoutConstraint:NSLayoutConstraint的子类，仅仅只是增加了一个mas_key属性
@@ -148,6 +150,7 @@ categories: blog
     * View+MASAdditions: 对UIView的扩展
     * MASUtilities: masonry一些公共的方法和工具,MASLayoutPriority是对UILayoutPriority的重定义，     _MASBoxValue（）将传入的值转化成对应的对象.
     * 当定义了MAS_SHORTHAND这个宏后，可以省略mas_的前缀
+    
  2  通过对**mas_makeConstraints:**整个流程的解析来简单分析masonry的原理，
          
         UIView *testView = [[UIView alloc] init];
