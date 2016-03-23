@@ -29,24 +29,17 @@ categories: blog
             
             
    3.简单模仿masonry的原理实现一个计算器
-   
-   
-     建立一个计算的类 **CaculatorMaker**
-   
-   
+
+        建立一个计算的类 **CaculatorMaker**
         在.h文件中
         @interface CaculatorMaker : NSObject
         @property (nonatomic, assign) NSInteger result;
-        //- (CaculatorMaker *(^)(int))add;
-        //- (CaculatorMaker *(^)(int))sub;
-         @property (nonatomic, strong) CaculatorMaker *(^add)(int);
-         @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
-         @end
-     
+        @property (nonatomic, strong) CaculatorMaker *(^add)(int);
+        @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
+        @end
         在.m文件中
          - (CaculatorMaker *(^)(int))add
          {
-    
         return ^(int resut) {
           _result += resut;
           return self;
@@ -60,9 +53,7 @@ categories: blog
            };
          }
    
-      创建**NSObject+Caculator**
-        
-        
+      创建**NSObject+Caculator**        
         在.h文件中
         + (NSInteger)makeCalulators:(void(^)(CaculatorMaker *make))caculatorMaker;
         在.m文件中
@@ -73,10 +64,7 @@ categories: blog
             return maker.result;
         }
     
-    
-     在控制器中实现 
-     
-     
+      在控制器中实现      
          [NSObject makeCalulators:^(CaculatorMaker *maker) {
            maker.add(1).add(2).sub(1);
            NSLog(@"%ld",maker.result);
