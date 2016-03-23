@@ -18,6 +18,7 @@ categories: blog
    1. ios利用block来实现链式编程,其核心思想是:方法的返回值是一个Block,Block内部装着真正要执行的方法,Block内   部再返回self;
    2. 如下列的形式
    
+   
         - ( 返回值是Block ) 方法名
          {   
             return *{   
@@ -28,6 +29,7 @@ categories: blog
             
             
    3.简单模仿masonry的原理实现一个计算器
+   
    
    * 建立一个计算的类 **CaculatorMaker**
    
@@ -60,6 +62,7 @@ categories: blog
    
    * 创建**NSObject+Caculator**
         
+        
         在.h文件中
         + (NSInteger)makeCalulators:(void(^)(CaculatorMaker *make))caculatorMaker;
         在.m文件中
@@ -72,6 +75,7 @@ categories: blog
     
     
    * 在控制器中实现 
+     
      
          [NSObject makeCalulators:^(CaculatorMaker *maker) {
            maker.add(1).add(2).sub(1);
