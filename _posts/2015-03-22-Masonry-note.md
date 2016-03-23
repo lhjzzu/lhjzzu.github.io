@@ -36,11 +36,14 @@ categories: blog
    
         在.h文件中
         @interface CaculatorMaker : NSObject
+        
         @property (nonatomic, assign) NSInteger result;
+        
         //- (CaculatorMaker *(^)(int))add;
         //- (CaculatorMaker *(^)(int))sub;
         @property (nonatomic, strong) CaculatorMaker *(^add)(int);
         @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
+        
         @end
      
         在.m文件中
