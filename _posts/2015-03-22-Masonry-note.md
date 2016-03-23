@@ -8,11 +8,12 @@ categories: blog
 ---
 
 
-##Masonry的简介
+## Masonry的简介
+
    1. 地址 : https://github.com/SnapKit/Masonry
    2. Masonry是链式编程的典型应用,用于ios开发中进行自动布局。
 
-##先简单介绍一下链式编程
+## 先简单介绍一下链式编程
 
    1. ios利用block来实现链式编程,其核心思想是:方法的返回值是一个Block,Block内部装着真正要执行的方法,Block内   部再返回self;
    2. 如下列的形式
@@ -136,7 +137,7 @@ categories: blog
        [self.view addSubview:view];
       
 
-##Masonry原理
+## Masonry原理
 
   1 主要的类及作用
   
