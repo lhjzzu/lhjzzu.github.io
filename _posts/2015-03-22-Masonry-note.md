@@ -41,10 +41,14 @@ categories: blog
         
         //- (CaculatorMaker *(^)(int))add;
         //- (CaculatorMaker *(^)(int))sub;
-        @property (nonatomic, strong) CaculatorMaker *(^add)(int);
-        @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
-        
-        @end
+     
+                 @property (nonatomic, strong) CaculatorMaker *(^add)(int);
+       
+               @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
+       
+               
+      
+                @end
      
         在.m文件中
          - (CaculatorMaker *(^)(int))add
