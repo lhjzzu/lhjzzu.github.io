@@ -79,8 +79,7 @@ categories: blog
         
 
    4.  我利用链式编程给UIView做了一个简单的扩展来设置frame,创建**UIView+Chain**类
-    
-      在.h文件中
+       在.h文件中
        <pre><code>
        -(UIView *(^)(int))x;
        -(UIView *(^)(int))y;
