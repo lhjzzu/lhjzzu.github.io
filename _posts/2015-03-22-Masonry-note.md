@@ -7,7 +7,7 @@ categories: blog
 
 ---
 
-
+adfdffds
 ## Masonry的简介
 
    1. 地址 : https://github.com/SnapKit/Masonry
@@ -193,6 +193,9 @@ categories: blog
       closestCommonSuperview赋值给约束的installedView属性，installedView调用addConstraint:方法将
       layoutConstraint添加到installedView上即完成。
       5 这个流程仅仅是展示了最简单的一个流程。
+
+
+
 
          
 
