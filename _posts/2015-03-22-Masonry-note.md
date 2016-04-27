@@ -78,7 +78,7 @@ categories: blog
         </code></pre>
         
 
-   4.  我利用链式编程给UIView做了一个简单的扩展来设置frame,创建**UIView+Chain**类
+   4. 我利用链式编程给UIView做了一个简单的扩展来设置frame,创建**UIView+Chain**类
        在.h文件中
        <pre><code>
        -(UIView *(^)(int))x;
@@ -88,7 +88,7 @@ categories: blog
        </code></pre>
       在.m文件中
        <pre><code>
-       -(UIView *(^)(int))x
+      \- (UIView *(^)(int))x
       {
         __weak typeof(self) wSelf = self;
           return ^(int a) {
@@ -98,7 +98,7 @@ categories: blog
         return wSelf;
           };
       }
-      -(UIView *(^)(int))y
+      \- (UIView *(^)(int))y
       {
           __weak typeof(self) wSelf = self;
           return ^(int a) {
@@ -109,7 +109,7 @@ categories: blog
           };
       }
 
-      -(UIView *(^)(int))with
+       \- (UIView *(^)(int))with
       {
           __weak typeof(self) wSelf = self;
           return ^(int a) {
@@ -118,10 +118,10 @@ categories: blog
               wSelf.frame = frame;
               return wSelf;
           };
-      }
+       }
 
-      -(UIView *(^)(int))height
-      {
+       \- (UIView *(^)(int))height
+       {
           __weak typeof(self) wSelf = self;
           return ^(int a) {
               CGRect frame = wSelf.frame;
@@ -129,15 +129,20 @@ categories: blog
               wSelf.frame = frame;
               return wSelf;
           };
-      }
+       }
+       
       </code></pre>
+      
       在控制器其中使用
+      
        <pre><code>
+       
        UIView *view = [[UIView alloc] init];
        view.x(100).y(200).with(100).height(50);
        NSLog(@"%@",NSStringFromCGRect(view.frame));
        view.backgroundColor = [UIColor redColor];
        [self.view addSubview:view];
+       
        </code></pre>
              
 
