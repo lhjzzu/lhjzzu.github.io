@@ -29,7 +29,8 @@ categories: blog
             
             
    3. 简单模仿masonry的原理实现一个计算器
-
+   
+      <pre><code>
         建立一个计算的类CaculatorMaker
         在.h文件中
         @interface CaculatorMaker : NSObject
@@ -38,49 +39,58 @@ categories: blog
         @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
         @end
         在.m文件中
-         - (CaculatorMaker *(^)(int))add
+       -(CaculatorMaker *(^)(int))add
          {
         return ^(int resut) {
           _result += resut;
           return self;
            };
          }
-           - (CaculatorMaker *(^)(int))sub
+       -(CaculatorMaker *(^)(int))sub
          {
             return ^(int result) {
           _result -= result;
           return self;
            };
-         }
-   
+         }       
+       </code></pre>
+          
        创建NSObject+Caculator        
         在.h文件中
-        
-        + (NSInteger)makeCalulators:(void(^)(CaculatorMaker *make))caculatorMaker;
+        <pre><code>
+        +(NSInteger)makeCalulators:(void(^)(CaculatorMaker *make))caculatorMaker;
         在.m文件中
-        + (NSInteger)makeCalulators:(void (^)(CaculatorMaker *))caculatorMaker
+        +(NSInteger)makeCalulators:(void (^)(CaculatorMaker *))caculatorMaker
         {
             CaculatorMaker *maker = [[CaculatorMaker alloc] init];
             caculatorMaker(maker);
             return maker.result;
         }
+        </code></pre>
+        
     
        在控制器中实现
-             
+        <pre><code>
          [NSObject makeCalulators:^(CaculatorMaker *maker) {
            maker.add(1).add(2).sub(1);
            NSLog(@"%ld",maker.result);
-               }];
+               }];    
+        </code></pre>
+        
 
    4.  我利用链式编程给UIView做了一个简单的扩展来设置frame,创建**UIView+Chain**类
     
       在.h文件中
-      - (UIView *(^)(int))x;
-      - (UIView *(^)(int))y;
-      - (UIView *(^)(int))with;
-      - (UIView *(^)(int))height;
+       <pre><code>
+       -(UIView *(^)(int))x;
+       -(UIView *(^)(int))y;
+       -(UIView *(^)(int))with;
+       -(UIView *(^)(int))height;
+       </code></pre>
+     
       在.m文件中
-      - (UIView *(^)(int))x
+       <pre><code>
+       -(UIView *(^)(int))x
       {
         __weak typeof(self) wSelf = self;
           return ^(int a) {
@@ -90,7 +100,7 @@ categories: blog
         return wSelf;
           };
       }
-      - (UIView *(^)(int))y
+      -(UIView *(^)(int))y
       {
           __weak typeof(self) wSelf = self;
           return ^(int a) {
@@ -101,7 +111,7 @@ categories: blog
           };
       }
 
-      - (UIView *(^)(int))with
+      -(UIView *(^)(int))with
       {
           __weak typeof(self) wSelf = self;
           return ^(int a) {
@@ -112,7 +122,7 @@ categories: blog
           };
       }
 
-      - (UIView *(^)(int))height
+      -(UIView *(^)(int))height
       {
           __weak typeof(self) wSelf = self;
           return ^(int a) {
@@ -122,14 +132,17 @@ categories: blog
               return wSelf;
           };
       }
-      
+       </code></pre>
+            
       在控制器其中使用
+      <pre><code>
        UIView *view = [[UIView alloc] init];
        view.x(100).y(200).with(100).height(50);
        NSLog(@"%@",NSStringFromCGRect(view.frame));
        view.backgroundColor = [UIColor redColor];
        [self.view addSubview:view];
-      
+      </code></pre>
+             
 
 ## Masonry原理
 
