@@ -7,7 +7,7 @@ categories: blog
 
 ---
 
-## Masonry的简介发放时发生地方
+## Masonry的简介
 
    1. 地址 : https://github.com/SnapKit/Masonry
    2. Masonry是链式编程的典型应用,用于ios开发中进行自动布局。
