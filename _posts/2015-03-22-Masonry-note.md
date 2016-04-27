@@ -27,7 +27,7 @@ categories: blog
             }
             
             
-   3.简单模仿masonry的原理实现一个计算器
+   3. 简单模仿masonry的原理实现一个计算器
 
         建立一个计算的类CaculatorMaker
         在.h文件中
@@ -69,7 +69,7 @@ categories: blog
            NSLog(@"%ld",maker.result);
                }];
 
-  4 我利用链式编程给UIView做了一个简单的扩展来设置frame,创建**UIView+Chain**类
+   4.  我利用链式编程给UIView做了一个简单的扩展来设置frame,创建**UIView+Chain**类
     
       在.h文件中
       - (UIView *(^)(int))x;
