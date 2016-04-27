@@ -132,16 +132,16 @@ categories: blog
               return wSelf;
           };
       }
-       </code></pre>
-            
+      </code></pre>
+      
       在控制器其中使用
-      <pre><code>
+       <pre><code>
        UIView *view = [[UIView alloc] init];
        view.x(100).y(200).with(100).height(50);
        NSLog(@"%@",NSStringFromCGRect(view.frame));
        view.backgroundColor = [UIColor redColor];
        [self.view addSubview:view];
-      </code></pre>
+       </code></pre>
              
 
 ## Masonry原理
