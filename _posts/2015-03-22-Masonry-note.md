@@ -54,6 +54,7 @@ categories: blog
    
        创建NSObject+Caculator        
         在.h文件中
+        
         + (NSInteger)makeCalulators:(void(^)(CaculatorMaker *make))caculatorMaker;
         在.m文件中
         + (NSInteger)makeCalulators:(void (^)(CaculatorMaker *))caculatorMaker
@@ -63,7 +64,8 @@ categories: blog
             return maker.result;
         }
     
-       在控制器中实现      
+       在控制器中实现
+             
          [NSObject makeCalulators:^(CaculatorMaker *maker) {
            maker.add(1).add(2).sub(1);
            NSLog(@"%ld",maker.result);
