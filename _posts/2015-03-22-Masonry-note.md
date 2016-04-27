@@ -86,7 +86,6 @@ categories: blog
        -(UIView *(^)(int))with;
        -(UIView *(^)(int))height;
        </code></pre>
-     
       在.m文件中
        <pre><code>
        -(UIView *(^)(int))x
@@ -132,7 +131,6 @@ categories: blog
           };
       }
       </code></pre>
-      
       在控制器其中使用
        <pre><code>
        UIView *view = [[UIView alloc] init];
