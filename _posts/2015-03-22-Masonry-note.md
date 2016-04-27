@@ -17,14 +17,13 @@ categories: blog
    1. ios利用block来实现链式编程,其核心思想是:方法的返回值是一个Block,Block内部装着真正要执行的方法,Block内   部再返回self;
    2. 如下列的形式
    
-   
-        - ( 返回值是Block ) 方法名
+     <pre><code>  - ( 返回值是Block ) 方法名
          {   
             return *{   
                     Block内部装着真正要执行的代码
                     return self;
                     };
-            }
+            }</code></pre>
             
             
    3. 简单模仿masonry的原理实现一个计算器
