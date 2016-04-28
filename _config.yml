@@ -1,64 +1,106 @@
-# Site settings
-title: Just Do It!
-header-img: "img/facebook.jpg"
-tagline: "cn"  
-description: "刘华健|Do&Now"  
-baseurl: ""
-url: "http://www.lhjzzu"
-
-# About/contact
-owner: 
-  name: "lhjzzu"
-  email: 1822657131@qq.com
-  bio: "一切终会偿还!"
-
-# Data
-gavatar: http://admin.cfwh2008.com/upload/video_cover/20131210114530305.jpg
-favicon: img/favicon.png
-
-#douban_username: 
-#twitter_username:
-github_username: lhjzzu
-facebook_username: 
-weibo_username: lhjzzu 
-#zhihu_username:
-
-# Build settings  
-# use Github Flavored Markdown !important  
-# document: http://jekyllrb.com/docs/configuration/#kramdown  
-markdown: kramdown
-highlighter: rouge
-permalink: pretty
-paginate: 8
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
-
-
-# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# ---------------- #
+#   Main Configs   #
+# ---------------- #
+baseurl:
+url: http://www.lhjzzu.com
+date_format: "ordinal"
+title: 码志
+subtitle: "打码改变人生"
+description: "马壮的个人博客"
+keywords: 码志, Zhuang Ma, mzlogin, mazhuang
+favicon: /favicon.ico
 timezone: Asia/Shanghai
+encoding: "utf-8"
+source_code: https://github.com/mzlogin/mzlogin.github.io
 
-# Defaults for posts
-defaults:
+# ---------------- #
+#      Author      #
+# ---------------- #
+author: Zhuang Ma
+organization: Sogou, Inc.
+organization_url: https://www.sogou.com
+location: Beijing, China
+email: chumpma@gmail.com
+
+# ---------------- #
+#    Navigation    #
+# ---------------- #
+navs:
   -
-    scope: 
-      path: ""
-      type: "posts"
-    values:
-      layout: "post"
-      author: "lhjzzu"
-      header-img: "img/facebook.jpg" # We don't want posts without a header image, that whould mean white on white
+    href: /
+    label: 首页
 
-# Comments 
-comments :
-  provider : duoshuo
-  duoshuo :
-    short_name : abc19911991
-  disqus :
-      short_name : lhjzzu
+  -
+    href: /categories/
+    label: 分类
 
-# Analytics and webmaster tools stuff goes here
-#google_analytics: 
-#google_verify:
-# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
-#bing_verify:
+  -
+    href: /wiki/
+    label: 维基
 
-# Links to include in footer navigation
+  -
+    href: /links/
+    label: 链接
+
+  -
+    href: /about/
+    label: 关于
+
+# ---------------- #
+#       RSS        #
+# ---------------- #
+subscribe_rss: /feed.xml
+
+# ---------------- #
+#      Jekyll      #
+# ---------------- #
+markdown: kramdown
+kramdown:
+    input: GFM
+highlighter: rouge
+paginate: 8
+lsi: false
+quiet: false
+excerpt_separator: "\n\n"
+permalink: /:year/:month/:day/:title/
+gems:
+    - rouge
+#     - jekyll-html-pipeline
+    - jekyll-paginate
+    - jekyll-sitemap
+    - jekyll-feed
+    - jemoji
+#     - jekyll-mentions
+collections:
+    wiki:
+        output: true
+        permalink: /wiki/:path/
+
+# ---------------- #
+#      Socials     #
+# ---------------- #
+github_username: mzlogin
+douban_username: freedim
+facebook_username: mzlogin
+weibo_username: mzlogin
+zhihu_username: mzlogin
+twitter_username: mzlogin
+
+# ---------------- #
+#      Comments    #
+# ---------------- #
+# support provider: disqus, duoshuo, changyan
+comments_provider: disqus
+# !!!重要!!! 请修改下面两个用户名为你自己申请的
+# !!!Important!!! Please modify usernames below to yours
+duoshuo_username: mazhuang
+disqus_username: mzlogin
+
+# ---------------- #
+#      Datas       #
+# ---------------- #
+skill_software_keywords: [Java, C++, Python, Design Patterns]
+skill_mobile_app_keywords: [Android, Reverse Engineering]
+skill_windows_keywords: [Win32 SDK, DuiLib, WTL, COM, WinDbg]
+popular_repos: ['chinese-copywriting-guidelines','android-reverse-engineering', 'csdncommenter', 'mzlogin.github.io', 'vim-markdown-toc']
+contribute_repos: ['sparanoid/chinese-copywriting-guidelines', 'waylife/RentCrawer']
