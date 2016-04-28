@@ -4,23 +4,23 @@
 baseurl:
 url: http://www.lhjzzu.com
 date_format: "ordinal"
-title: 码志
-subtitle: "打码改变人生"
-description: "马壮的个人博客"
+title: 静心
+subtitle: ""
+description: "刘华健个人博客"
 keywords: 码志, Zhuang Ma, mzlogin, mazhuang
 favicon: /favicon.ico
 timezone: Asia/Shanghai
 encoding: "utf-8"
-source_code: https://github.com/mzlogin/mzlogin.github.io
+source_code: https://github.com/lhjzzu/lhjzzu.github.io
 
 # ---------------- #
 #      Author      #
 # ---------------- #
-author: Zhuang Ma
-organization: Sogou, Inc.
-organization_url: https://www.sogou.com
-location: Beijing, China
-email: chumpma@gmail.com
+author: Liu Hua Jian
+organization: ouer, Inc.
+organization_url: https://www.kkkd.com
+location: HangZhou, China
+email: 1822657131@qq.com
 
 # ---------------- #
 #    Navigation    #
@@ -33,10 +33,6 @@ navs:
   -
     href: /categories/
     label: 分类
-
-  -
-    href: /wiki/
-    label: 维基
 
   -
     href: /links/
@@ -79,28 +75,25 @@ collections:
 # ---------------- #
 #      Socials     #
 # ---------------- #
-github_username: mzlogin
-douban_username: freedim
-facebook_username: mzlogin
-weibo_username: mzlogin
-zhihu_username: mzlogin
-twitter_username: mzlogin
+github_username: lhjzzu
+weibo_username: lhjzzu1991
+#zhihu_username:lhjzzu
 
 # ---------------- #
 #      Comments    #
 # ---------------- #
 # support provider: disqus, duoshuo, changyan
-comments_provider: disqus
+comments_provider: duoshuo
 # !!!重要!!! 请修改下面两个用户名为你自己申请的
 # !!!Important!!! Please modify usernames below to yours
-duoshuo_username: mazhuang
-disqus_username: mzlogin
+duoshuo_username: abc19911991
+#disqus_username: abc19911991
 
 # ---------------- #
 #      Datas       #
 # ---------------- #
-skill_software_keywords: [Java, C++, Python, Design Patterns]
-skill_mobile_app_keywords: [Android, Reverse Engineering]
-skill_windows_keywords: [Win32 SDK, DuiLib, WTL, COM, WinDbg]
-popular_repos: ['chinese-copywriting-guidelines','android-reverse-engineering', 'csdncommenter', 'mzlogin.github.io', 'vim-markdown-toc']
-contribute_repos: ['sparanoid/chinese-copywriting-guidelines', 'waylife/RentCrawer']
+skill_software_keywords: [OC]
+skill_mobile_app_keywords: [IOS]
+skill_windows_keywords: []
+popular_repos: ['lhjzzu.github.io']
+#contribute_repos: ['sparanoid/chinese-copywriting-guidelines', 'waylife/RentCrawer']
