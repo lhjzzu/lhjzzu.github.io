@@ -37,7 +37,7 @@ categories: blog
         @property (nonatomic, assign) NSInteger result;
         @property (nonatomic, strong) CaculatorMaker *(^add)(int);
         @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
-        @end
+        @end        
         在.m文件中
        -(CaculatorMaker *(^)(int))add
          {
