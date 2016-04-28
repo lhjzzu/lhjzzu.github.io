@@ -17,7 +17,8 @@ categories: blog
    1. ios利用block来实现链式编程,其核心思想是:方法的返回值是一个Block,Block内部装着真正要执行的方法,Block内   部再返回self;
    2. 如下列的形式
    
-      <pre><code> 
+      ``` 
+     
      -( 返回值是Block ) 方法名
          {   
             return *{   
@@ -25,20 +26,24 @@ categories: blog
                     return self;
                     };
             }
-     </code></pre>
+     ```
             
             
    3. 简单模仿masonry的原理实现一个计算器
    
-      <pre><code>
-        建立一个计算的类CaculatorMaker
-        在.h文件中
+       建立一个计算的类CaculatorMaker
+       在.h文件中
+        
+     ```
         @interface CaculatorMaker : NSObject
         @property (nonatomic, assign) NSInteger result;
         @property (nonatomic, strong) CaculatorMaker *(^add)(int);
         @property (nonatomic, strong) CaculatorMaker *(^sub)(int);
         @end
+     ```
         在.m文件中
+           
+      ```
        -(CaculatorMaker *(^)(int))add
          {
         return ^(int resut) {
@@ -52,12 +57,14 @@ categories: blog
           _result -= result;
           return self;
            };
-         }       
-       </code></pre>
+         }   
+       ```    
+    
           
        创建NSObject+Caculator        
         在.h文件中
-        <pre><code>
+        
+       ```
         +(NSInteger)makeCalulators:(void(^)(CaculatorMaker *make))caculatorMaker;
         在.m文件中
         +(NSInteger)makeCalulators:(void (^)(CaculatorMaker *))caculatorMaker
@@ -66,16 +73,19 @@ categories: blog
             caculatorMaker(maker);
             return maker.result;
         }
-        </code></pre>
+       ```
         
     
        在控制器中实现
-        <pre><code>
+       
+       
+         ```
          [NSObject makeCalulators:^(CaculatorMaker *maker) {
            maker.add(1).add(2).sub(1);
            NSLog(@"%ld",maker.result);
-               }];    
-        </code></pre>
+                }];   
+                   
+         ```
         
 
    4. 我利用链式编程给UIView做了一个简单的扩展来设置frame,创建**UIView+Chain**类
