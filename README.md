@@ -1,7 +1,7 @@
 码志
 =================
 
-我的个人博客：<http://lhjzzu.com>，外观基于 [DONGChuan](https://github.com/mzlogin/mzlogin.github.io) 修改，万分感谢！
+我的个人博客：<http://mazhuang.org>，外观基于 [DONGChuan](http://dongchuan.github.io) 修改，感谢！
 
 欢迎 Star 和 Fork。
 
@@ -57,3 +57,11 @@ Fork 本项目之后，还需要做一些事情才能让你的页面「正确」
 
 * 杜绝难断句、难理解的长句子，如果不能将其拆分成几个简洁的短句，说明脑中的理解并不清晰。
 
+### 书写思考
+
+* 那些高质量的博主，他们的行文，内容组织方式，有什么值得学习借鉴的地方？
+
+[1]: https://github.com/mzlogin/chinese-copywriting-guidelines
+[2]: http://mazhuang.org/2015/12/05/diff-between-gfm-and-redcarpet/
+[3]: https://help.github.com/articles/setting-up-your-pages-site-locally-with-jekyll/
+[4]: https://github.com/mzlogin/mzlogin.github.io/issues/2
