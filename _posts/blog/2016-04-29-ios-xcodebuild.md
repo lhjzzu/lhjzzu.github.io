@@ -8,15 +8,19 @@ categories: blog
 ---
 
 
-## xcodebuild 简介
+## xcodebuild 
 
- 1 xcodebuild 编译code中的projects和workspaces
+### 简介
+
+ xcodebuild 编译code中的projects和workspaces
  
- 2 在终端中输入
+### 文档
+ 
+ 1 在终端中输入
  
  `man xcodebuild`
  
- 3下面是xcodebuild的部分文档
+ 2 下面是xcodebuild的部分文档
   
     NAME
      xcodebuild -- build Xcode projects and workspaces
