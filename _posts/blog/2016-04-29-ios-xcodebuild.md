@@ -63,8 +63,7 @@ categories: blog
 
 ## xcodebuild命令
 
-**`xcodebuild -version [-sdk [sdkfullpath | sdkname]] [infoitem]`
-**
+### xcodebuild -version [-sdk [sdkfullpath | sdkname]] [infoitem]
 
 1 显示版本信息
 
@@ -96,7 +95,7 @@ categories: blog
    2 infoitem显示信息项，没有什么有意义的作用可以不管
     
 
- **`xcodebuild -showsdks`**	
+### xcodebuild -showsdks
 
 1 显示sdk
 
@@ -127,7 +126,7 @@ categories: blog
 
 
 
-  **`xcodebuild -showBuildSettings`**
+### xcodebuild -showBuildSettings
    
   1 cd进Test工程文件夹,显示buildSettings
   
@@ -154,10 +153,13 @@ categories: blog
         ARCHS_STANDARD_32_64_BIT = armv7 arm64
         ARCHS_STANDARD_32_BIT = armv7
         ....
+        
+        
+### xcodebuild -list [-project name.xcodeproj | -workspace name.xcworkspace]
 
-2 显示关于Test.xcodeproj的信息
+ 显示关于Test.xcodeproj的信息
 
-` xcodebuild -list`
+`xcodebuild -list`
 
 
 
