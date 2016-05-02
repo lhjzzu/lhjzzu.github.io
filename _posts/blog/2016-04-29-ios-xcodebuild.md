@@ -185,11 +185,84 @@ categories: blog
 
 
 注意：
+
  1 在这里我们可以得到project的`targets`以及`schemes`以及`Build Configurations`
 
  2 `xcodebuild -list`与`xcodebuild -list -project Test.xcodeproj`相同，因为它默认取`Test.xcodeproj`
      
-  3 如果有pods，`xcodebuild -list -workspace Test.xcworkspace`
+ 3 如果有pods，`xcodebuild -list -workspace Test.xcworkspace`
+ 
+ 
+###  xcodebuild [-project name.xcodeproj][[-target targetname] ... | -alltargets] [-configuration configurationname][-sdk [sdkfullpath | sdkname]] [action ...][buildsetting=value ...] [-userdefault=value ...]
+
+ cd进Test工程文件
+
+`xcodebuild -sdk iphoneos9.3`
+
+下面是编译的大致流程:
+
+     Check dependencies 
+     —CompileC 编译各个.m文件
+     —Ld build/Test.build/Release-iphoneos/Test.build/Objects-normal/armv7/Test normal armv7 
+     —Ld build/Test.build/Release-iphoneos/Test.build/Objects-normal/arm64/Test normal arm64 
+     —CreateUniversalBinary build/Release-iphoneos/Test.app/Test normal armv7\ arm64 
+     —CompileStoryboard Test/Base.lproj/LaunchScreen.storyboard 
+     —CompileStoryboard Test/Base.lproj/Main.storyboard
+     —CompileAssetCatalog build/Release-iphoneos/Test.app Test/Assets.xcassets
+     —ProcessInfoPlistFile build/Release-iphoneos/Test.app/Info.plist Test/Info.plist 
+     —GenerateDSYMFile build/Release-iphoneos/Test.app.dSYM build/Release-iphoneos/Test.app/Test
+     —LinkStoryboards 
+     —ProcessProductPackaging /Users/chiyou/Library/MobileDevice/Provisioning\ Profiles/2504ed49-d99e-4f7a-bafb-bd1eb4bcea9e.mobileprovision build/Release-iphoneos/Test.app/embedded.mobileprovision 
+     —Touch build/Release-iphoneos/Test.app 
+     —ProcessProductPackaging /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/Entitlements.plist build/Test.build/Release-iphoneos/Test.build/Test.app.xcent 
+     —CodeSign build/Release-iphoneos/Test.app 
+       Signing Identity:     "iPhone Developer: zhida wu (8MR2HY4EQA)"
+       Provisioning Profile: "iOS Team Provisioning Profile: *"
+                      (2504ed49-d99e-4f7a-bafb-bd1eb4bcea9e) —Validate build/Release-iphoneos/Test.app  
+     -Validate /Users/chiyou/Library/Developer/Xcode/DerivedData/Test-dyjdzvtgqgxtqechyirrgsrcuxma/Build/Products/Debug-iphoneos/Test.app              
+     ** BUILD SUCCEEDED **
+
+
+
+当出现`** BUILD SUCCEEDED **`时，代表编译成功，
+
+1 这种情况下，默认的`-project`的值为`Test.xcodeproj`，默认的`-target`的值为`Test`，默认的`-configuration`对应的值为`Release`，默认的`action`为`build`
+
+2 在Test文件夹下，生成`build`文件夹，在`build`中存在`Release-iphoneos`，`Test.build`两个文件夹，`Test.app`存在于`Release-iphoneos`中。
+
+`xcodebuild -project  Test.xcodeproj -configuration Release -sdk iphoneos9.3 build `  
+
+1 这种情况与`xcodebuild -sdk iphoneos9.3`等价
+
+2 可以将`iphoneos9.3`换成`iphonesimulator9.3`，`build`下会生成`Release-iphonesimulator`文件夹，可以将`Release`换成`Debug`，`build`下会生成对应的`debug_xxx`文件夹
+
+3 作用是编译生成`xx.app`文件
+
+
+### xcodebuild -workspace name.xcworkspace -scheme schemename [[-destination destinationspecifier] ...] [-destination-timeout value] [-sdk [sdkfullpath | sdkname]] [action ...][buildsetting=value ...] [-userdefault=value ...]
+
+
+`xcodebuild -workspace Test.xcworkspace -scheme Test -sdk iphoneos9.3 build`
+
+1  -scheme的值可以通过xcodebuild -list -workspace Test.xcworkspace得到。
+
+`xcodebuild -workspace Test.xcworkspace -scheme Test -sdk iphoneos9.3 archive`
+
+1 生成一个`.xcarchive`文件,可以通过选择`window->organizer->Test` 可以看到我们的`.xcarchive`文件，右键`show in finder` 即可找到我们的文件.
+
+
+### xcodebuild -exportArchive -archivePath MyMobileApp.xcarchive -exportPath ExportDestination -exportOptionsPlist 'export.plist'
+
+     xcodebuild -exportArchive -archivePath /Users/chiyou/Library/Developer/Xcode/Archives/2016-05-02/Test.xcarchive -exportPath ~/desktop/ipa -exportOptionsPlist 'export.plist'
+
+1 作用是将生成的.xcarchive文件，打包成ipa文件.
+
+2 `-archivePath`的值即是`.xcarchive`文件的路径，可以打开xcode，选择`window->organizer->Test` 可以看到我们的`.xcarchive`文件，右键`show in finder` 即可找到我们的文件，可以看到文件的名字是`工程名+archive`的时间，我们要把名字改成容易识别的名字，例如把`Test 16-5-2 下午12.46.xcarchive`改为`Test.xcarchive`，否则识别不出来.
+
+3 `-exportPath`对应的值为输出的ipa包的存放路径，本例中是在桌面上建立一个ipa文件夹。
+
+4 `-exportOptionsPlist`对应的是`export.plist`文件，我们要建立一个`export.plist`文件，文件内输入`ExportDestination`，对应的值为输出ipa包的路径`~/desktop/ipa`。
+ 
 
 
 
