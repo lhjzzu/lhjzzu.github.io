@@ -12,7 +12,7 @@ categories: blog
 
 ### 简介
 
- xcodebuild 编译code中的projects和workspaces
+ xcodebuild 用于编译xcode中的projects和workspaces
  
 ### 文档
  
@@ -223,14 +223,19 @@ categories: blog
      ** BUILD SUCCEEDED **
 
 
-
 当出现`** BUILD SUCCEEDED **`时，代表编译成功，
 
-1 这种情况下，默认的`-project`的值为`Test.xcodeproj`，默认的`-target`的值为`Test`，默认的`-configuration`对应的值为`Release`，默认的`action`为`build`
+1 这种情况下，默认的`-project`的值为`Test. xcodeproj`，默认的`-target`的值为`Test`，默认的`-configuration`对应的值为`Release`，默认的`action`为`build`
 
 2 在Test文件夹下，生成`build`文件夹，在`build`中存在`Release-iphoneos`，`Test.build`两个文件夹，`Test.app`存在于`Release-iphoneos`中。
 
-`xcodebuild -project  Test.xcodeproj -configuration Release -sdk iphoneos9.3 build `  
+3 签名信息，Signing Identity:     "iPhone Developer: zhida wu (8MR2HY4EQA)"
+       Provisioning Profile: "iOS Team Provisioning Profile: *"
+                      (2504ed49-d99e-4f7a-bafb-bd1eb4bcea9e) —Validate build/Release-iphoneos/Test.app ，自动选择的。
+                      
+4 可以通过`CODE_SIGN_IDENTITY`以及`PROVISIONING_PROFILE`改变签名信息
+
+`xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 build `  
 
 1 这种情况与`xcodebuild -sdk iphoneos9.3`等价
 
@@ -238,6 +243,19 @@ categories: blog
 
 3 作用是编译生成`xx.app`文件
 
+
+`xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
+
+1 当我们使用xcode来进行打包的时候，`CODE_SIGN_IDENTITY`以及`PROVISIONING_PROFILE`的值就是`buildsetting`中选择的证书和`profile`文件对应的值。注意，要将工程的bundle id与描述性文件中的bundle保持一致
+2 `CODE_SIGN_IDENTITY`可以通过钥匙串来查看，证书完整的名字就是对应的值
+
+3 `PROVISIONING_PROFILE`通过xcode,`command+,`选择Accounts->证书对应的账号->View Details ->选择对应的profile->show in finder ->文件名就是PROVISIONING_PROFILE对应的值。
+
+4 此时的签名信息为
+
+Signing Identity:     "iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)"
+
+Provisioning Profile: "davebella_adhoc_all"(a97416b6-a868-44c7-8bd5-5847954305bb)
 
 ### xcodebuild -workspace name.xcworkspace -scheme schemename [[-destination destinationspecifier] ...] [-destination-timeout value] [-sdk [sdkfullpath | sdkname]] [action ...][buildsetting=value ...] [-userdefault=value ...]
 
@@ -264,7 +282,11 @@ categories: blog
 4 `-exportOptionsPlist`对应的是`export.plist`文件，我们要建立一个`export.plist`文件，文件内输入`ExportDestination`，对应的值为输出ipa包的路径`~/desktop/ipa`。
  
 
-
+## 参考
+* [iOS自动打包并发布脚本](http://liumh.com/2015/11/25/ios-auto-archive-ipa/)
+* [敲一下enter键，完成iOS的打包工作](http://ios.jobbole.com/84677/)
+* [iphone-命令行编译之--xcodebuild](iphone-命令行编译之--xcodebuild)
+ 
 
 
 
