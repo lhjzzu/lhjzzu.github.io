@@ -92,8 +92,11 @@ def autoPush():
     addCmd = 'git add .'
     process = subprocess.Popen(addCmd, shell = True)
     process.wait()
-    commitCmd = 'git commit -m "123"'
+    commitCmd = 'git commit -m "456"'
     process = subprocess.Popen(commitCmd, shell=True)
+    process.wait()
+    pushCmd = 'git push'
+
 
 
 def main():
