@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ios打包--xcodebuild以及xcrun(二)
+title: ios打包--xcodebuild(二)
 date: 2016-04-29
 categories: blog
 
@@ -18,7 +18,7 @@ categories: blog
  
  1 在终端中输入
  
- `$ man xcodebuild`
+ `man xcodebuild`
  
  2 下面是xcodebuild的部分文档
   
@@ -71,7 +71,7 @@ categories: blog
 
 1 显示版本信息
 
-`$ xcodebuild -version`
+`xcodebuild -version`
 
 
     Xcode 7.3
@@ -79,7 +79,7 @@ categories: blog
 
 2 显示某个sdk的版本信息
 
-`$ xcodebuild -version -sdk iphoneos9.3`
+`xcodebuild -version -sdk iphoneos9.3`
 
 
     iPhoneOS9.3.sdk - iOS 9.3 (iphoneos9.3)
@@ -103,7 +103,7 @@ categories: blog
 
 1 显示sdk
 
-`$ xcodebuild -showsdks`
+`xcodebuild -showsdks`
 
 
 
@@ -134,7 +134,7 @@ categories: blog
    
   1 cd进Test工程文件夹,显示buildSettings
   
-   `$ xcodebuild -showBuildSettings`
+   `xcodebuild -showBuildSettings`
    
 
     Build settings for action build and target Test:
@@ -163,7 +163,7 @@ categories: blog
 
  显示关于Test.xcodeproj的信息
 
-`$ xcodebuild -list`
+`xcodebuild -list`
 
 
 
@@ -197,7 +197,7 @@ categories: blog
 
  cd进Test工程文件夹
 
-`$ xcodebuild -sdk iphoneos9.3`
+`xcodebuild -sdk iphoneos9.3`
 
 下面是编译的大致流程:
 
@@ -235,7 +235,7 @@ categories: blog
                       
 4 可以通过`CODE_SIGN_IDENTITY`以及`PROVISIONING_PROFILE`改变签名信息
 
-`$ xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 build `  
+`xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 build `  
 
 1 这种情况与`xcodebuild -sdk iphoneos9.3`等价
 
@@ -244,7 +244,7 @@ categories: blog
 3 作用是编译生成`xx.app`文件
 
 
-    $ xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"
+`xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
 
 1 当我们使用xcode来进行打包的时候，`CODE_SIGN_IDENTITY`以及`PROVISIONING_PROFILE`的值就是`buildsetting`中选择的证书和`profile`文件对应的值。
 
@@ -263,18 +263,18 @@ Provisioning Profile: "davebella_adhoc_all"(a97416b6-a868-44c7-8bd5-5847954305bb
 ### xcodebuild -workspace name.xcworkspace -scheme schemename [[-destination destinationspecifier] ...] [-destination-timeout value] [-sdk [sdkfullpath | sdkname]] [action ...][buildsetting=value ...] [-userdefault=value ...]
 
 
-`$ xcodebuild -workspace Test.xcworkspace -scheme Test -sdk iphoneos9.3 build`
+`xcodebuild -workspace Test.xcworkspace -scheme Test -sdk iphoneos9.3 build`
 
 1  -scheme的值可以通过xcodebuild -list -workspace Test.xcworkspace得到。
 
-`$ xcodebuild -workspace Test.xcworkspace -scheme Test -sdk iphoneos9.3 archive`
+`xcodebuild -workspace Test.xcworkspace -scheme Test -sdk iphoneos9.3 archive`
 
 1 生成一个`.xcarchive`文件,可以通过选择`window->organizer->Test` 可以看到我们的`.xcarchive`文件，右键`show in finder` 即可找到我们的文件.
 
 
 ### xcodebuild -exportArchive -archivePath MyMobileApp.xcarchive -exportPath ExportDestination -exportOptionsPlist 'export.plist'
 
-     $ xcodebuild -exportArchive -archivePath /Users/chiyou/Library/Developer/Xcode/Archives/2016-05-02/Test.xcarchive -exportPath ~/desktop/ipa -exportOptionsPlist 'export.plist'
+     xcodebuild -exportArchive -archivePath /Users/chiyou/Library/Developer/Xcode/Archives/2016-05-02/Test.xcarchive -exportPath ~/desktop/ipa -exportOptionsPlist 'export.plist'
 
 1 作用是将生成的.xcarchive文件，打包成ipa文件.
 
@@ -284,214 +284,6 @@ Provisioning Profile: "davebella_adhoc_all"(a97416b6-a868-44c7-8bd5-5847954305bb
 
 4 `-exportOptionsPlist`对应的是`export.plist`文件，我们要建立一个`export.plist`文件，文件内输入`ExportDestination`，对应的值为输出ipa包的路径`~/desktop/ipa`。
  
- 
- 
- 
-## xcrun
-
-### 简介
- ` xcrun - Run or locate development tools and properties.` 
-  运行或定位开发工具以及属性
-  
-### 部分文档
- 1 在终端中输入 `$ man xcrun`
- 
- 2 下面是xcrun的整个文档
-  
-     NAME
-       xcrun - Run or locate development tools and properties.
-
-    SYNOPSIS
-       xcrun [--sdk <SDK name>] --find <tool name>
-
-       xcrun [--sdk <SDK name>] <tool name> ... tool arguments ...
-
-       <tool name> ... tool arguments ...
-
-     DESCRIPTION
-       xcrun  provides  a  means  to locate or invoke developer tools from the
-       command-line, without requiring users to modify Makefiles or  otherwise
-       take inconvenient measures to support multiple Xcode tool chains.
-
-       The tool xcode-select(1) is used to set a system default for the active
-       developer directory, and may be overridden by the  DEVELOPER_DIR  envi-
-       ronment variable (see ENVIRONMENT).
-       
-       The  SDK  which  will be searched defaults to the most recent available
-       SDK, and can be specified by the SDKROOT environment  variable  or  the
-       --sdk  option  (which  takes  precedences  over  SDKROOT). When used to
-       invoke another tool (as opposed to simply finding it), xcrun will  pro-
-       vide  the  absolute path to the selected SDK in the SDKROOT environment
-       variable. See ENVIRONMENT for more information.
-       
-       
-       Usage
-       xcrun supports several different usages, to both look up the  paths  to
-       tools as well as execute them.
-
-       When  used  with  the  --find  argument, as in xcrun [--sdk <SDK name>]
-       --find <tool name>, the absolute path to the tool (in the provided SDK,
-       if given) will be printed.
-
-       When  used  without --find, the name of a tool is required and the tool
-       will be executed with the provided arguments.
-
-       When used as the target of a symbolic link, it derives the tool name to
-       use from the name it was invoked under, and then executes that tool.
-       
-       
-       OPTIONS
-       -v, --verbose
-              Add verbose information on how the tool lookup is performed.
-
-       -n, --no-cache
-              Don't  consult  the  cache  when  looking  up values. In effect,
-              causes the cache entry to be refreshed.
-
-       -k, --kill-cache
-              Removes the cache. Causes all values to be re-cached.
-
-       --sdk  Specifies which SDK to search for tools. If no --sdk argument is
-              provided, then the SDK used will be taken from the SDKROOT envi-
-              ronment variable, if present.
-
-              Use xcodebuild -showsdks to list the available SDK names.
-      --toolchain
-              Specifies which toolchain to use to perform the  lookup.  If  no
-              --toolchain argument is provided, then the toolchain to use will
-              be taken from the TOOLCHAINS environment variable, if present.
-
-       -l, --log
-              Print the full command line that is invoked.
-
-       -f, --find
-              Enable "find" mode, in which the resolved tool path  is  printed
-              instead of the tool being executed.
-
-       -r, --run
-              Enable  "run"  mode, in which the resolved tool path is executed
-              with any provided additional  arguments.  This  is  the  default
-              mode.
-
-       --show-sdk-path
-              Print the path to the selected SDK.
-              
-       --show-sdk-version
-              Print the version number of the selected SDK.
-
-       --show-sdk-build-version
-              Print the build version number of the selected SDK.
-
-       --show-sdk-platform-path
-              Print the path to the platform for the selected SDK.
-
-       --show-sdk-platform-version
-              Print the version number of the platform for the selected SDK.
-              
-              
-       ENVIRONMENT
-       DEVELOPER_DIR
-          Overrides the active developer directory. When DEVELOPER_DIR is set,
-          its value will be used instead of the system-wide  active  developer
-          directory.
-
-       SDKROOT
-          Specifies  the  default  SDK  to be used when looking up tools (some
-          tools may have SDK specific versions).
-
-          This environment variable is also set by xcrun to  be  the  absolute
-          path  to  the  user  provided  SDK  (either via SDKROOT or the --sdk
-          option), when it is used to invoke a normal  developer  tool  (build
-          tools like xcodebuild or make are exempt from this behavior).
-
-          For example, if xcrun is used to invoke clang via:
-              xcrun --sdk macosx clang test.c
-              
-          then xcrun will provide the full path to the macosx SDK in the envi-
-          ronment variable SDKROOT. That in turn will be used by  clang(1)  to
-          automatically select that SDK when compiling the test.c file.
-
-       TOOLCHAINS
-          Specifies  the  default  toolchain  to be used when looking up tools
-          (for tools which are toolchain specific).
-
-       xcrun_log
-          Same as specifying --log.
-
-       xcrun_nocache
-          Same as specifying --no-cache.
-
-       xcrun_verbose
-          Same as specifying --verbose.
-          
-          
-       EXAMPLES
-       xcrun --find clang
-          Finds the path to the clang binary in the default SDK.
-
-       xcrun --sdk iphoneos --find texturetool
-          Finds the path to the texturetool binary in the iOS SDK.
-
-       xcrun --sdk macosx --show-sdk-path
-          Prints the path to the current Mac OS X SDK.
-
-       xcrun git status
-          Locates the git command and then executes it with a single  argument
-          ("status").
-                    
-       DIAGNOSTICS
-       When  xcrun  is  invoked  with  the  name  xcrun, the options --log and
-       --verbose are useful debugging aids. The option --no-cache can be  used
-       to bypass cache lookup, but often at a significant cost in performance.
-
-       When xcrun has taken the place of another tool, the arguments are those
-       of  the  tool replaced, and the various xcrun options can't be used. In
-       this case, use the specific environment variables instead.
-
-    SEE ALSO
-       xcodebuild(1), xcode-select(1)
-       
-       
-## xcrun 命令探析
-   
-###  找到二进制文件clang在默认的SDK中的路径
-   
-   `$ xcrun --find clang`
-   
-   `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang`
-  
-  1 通过`/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/`，我们可以发现在`bin`文件夹内，有好多与clang类似的二进制文件.
-  
-  2 通过`xcrun --find xxxxx`，可以方便的定位出其他二进制文件的路径
-
-### 找到二进制文件texturetool在 IOS SDK中的路径
-
-`$ xcrun --sdk iphoneos --find texturetool`
-
-`/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/texturetool`
-
- 1 通过`/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/`，我们可以发现在`bin`文件夹内，有好多与texturetool类似的二进制文件.
-  
- 2 通过`xcrun --find xxxxx`，可以方便的定位出其他二进制文件的路径
- 
- 3 其中二进制文件`PackageApplication`是用来将.app文件打包成ipa文件的.
- 
-### 打印出当前Mac OS X SDK的路径
-`$ xcrun --sdk macosx --show-sdk-path`
-
-### 将xxx.app文件打包成xxx.ipa并输出到指定位置(重点)
-`$ xcrun -sdk iphoneos -v PackageApplication ./build/Release-iphoneos/Test.app -o ~/Desktop/ipa/Test.ipa`
-
-1 `PackageApplication`指定打包的工具
-
-2 `./build/Release-iphoneos/Test.app`指定打包的目标文件(.app)
-
-3 `~/Desktop/ipa/Test.ipa`指定输出的路径
-
-### 定位git命令并执行
-`$ xcrun git status`
-
-
 
 ## 参考
 * [iOS自动打包并发布脚本](http://liumh.com/2015/11/25/ios-auto-archive-ipa/)
