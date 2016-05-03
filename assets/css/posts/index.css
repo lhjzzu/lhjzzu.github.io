@@ -44,7 +44,7 @@
     width: 6px;
     height: 6px;
     margin-left: -4px;
-    background: #bbb;
+    background: #000;
     border-radius: 50%;
     border: 1px solid #fff;
     transition-duration: 0.2s;
@@ -116,6 +116,6 @@
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
-    background-color: #777;
+    background-color: #000;
     border-radius: 10px;
 }
