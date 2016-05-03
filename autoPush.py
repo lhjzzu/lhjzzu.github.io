@@ -6,7 +6,6 @@ def autoPush(message):
     addCmd = 'git add .'
     process = subprocess.Popen(addCmd, shell = True)
     process.wait()
-    print 123
     commitCmd = 'git commit -m "%s"' %(message)
     process = subprocess.Popen(commitCmd, shell=True)
     process.wait()
