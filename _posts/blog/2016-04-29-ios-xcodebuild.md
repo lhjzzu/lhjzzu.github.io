@@ -460,7 +460,8 @@ Provisioning Profile: "davebella_adhoc_all"(a97416b6-a868-44c7-8bd5-5847954305bb
    
    `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang`
   
-  1 通过`/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/`，我们可以发现在`bin`文件夹内，有好多与clang类似的二进制文件.
+  1 通过`/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr
+  /bin/`，我们可以发现在`bin`文件夹内，有好多与clang类似的二进制文件.
   
   2 通过`xcrun --find xxxxx`，可以方便的定位出其他二进制文件的路径
 
@@ -470,7 +471,8 @@ Provisioning Profile: "davebella_adhoc_all"(a97416b6-a868-44c7-8bd5-5847954305bb
 
 `/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/texturetool`
 
- 1 通过`/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/`，我们可以发现在`bin`文件夹内，有好多与texturetool类似的二进制文件.
+ 1 通过 `/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer
+ /usr/bin/`，我们可以发现在`bin`文件夹内，有好多与texturetool类似的二进制文件.
   
  2 通过`xcrun --find xxxxx`，可以方便的定位出其他二进制文件的路径
  
@@ -496,7 +498,7 @@ Provisioning Profile: "davebella_adhoc_all"(a97416b6-a868-44c7-8bd5-5847954305bb
 ## 参考
 * [iOS自动打包并发布脚本](http://liumh.com/2015/11/25/ios-auto-archive-ipa/)
 * [敲一下enter键，完成iOS的打包工作](http://ios.jobbole.com/84677/)
-* [iphone-命令行编译之--xcodebuild](iphone-命令行编译之--xcodebuild)
+* [iphone-命令行编译之--xcodebuild](http://www.cnblogs.com/xiaodao/archive/2012/03/01/2375609.html)
  
 
 
