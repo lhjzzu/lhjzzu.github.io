@@ -169,7 +169,7 @@ Xcode 会自动生成一个entitlements文件(plist格式),文件格式如下
 ### 准备:
 
 * 一个已经签名的ipa包（例如 DV.ipa）
-* 企业发布证书，以及distribution的.mobilepro）vision文件，命名为embedded
+* 企业发布证书，以及distribution的.mobileprovision文件，命名为embedded
 * embedded.mobileprovision的bundle identify可以自定(例如com.ouer.test)
 * 创建一个entitlements.plist文件,内容如下
 
