@@ -12,6 +12,8 @@ def autoPush(message):
     process.wait()
     pushCmd = 'git push'
     process = subprocess.Popen(pushCmd, shell=True)
+    process.wait()
+
 def main():
     parser = OptionParser()
     parser.add_option("-m","--message", help="Commit Message",metavar="message")
