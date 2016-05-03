@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ios xcodebuil命令探析
+title: ios打包--xcodebuild命令探析(二)
 date: 2016-04-29
 categories: blog
 
@@ -195,7 +195,7 @@ categories: blog
  
 ###  xcodebuild [-project name.xcodeproj][[-target targetname] ... | -alltargets] [-configuration configurationname][-sdk [sdkfullpath | sdkname]] [action ...][buildsetting=value ...] [-userdefault=value ...]
 
- cd进Test工程文件
+ cd进Test工程文件夹
 
 `xcodebuild -sdk iphoneos9.3`
 
@@ -246,12 +246,15 @@ categories: blog
 
 `xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
 
-1 当我们使用xcode来进行打包的时候，`CODE_SIGN_IDENTITY`以及`PROVISIONING_PROFILE`的值就是`buildsetting`中选择的证书和`profile`文件对应的值。注意，要将工程的bundle id与描述性文件中的bundle保持一致
-2 `CODE_SIGN_IDENTITY`可以通过钥匙串来查看，证书完整的名字就是对应的值
+1 当我们使用xcode来进行打包的时候，`CODE_SIGN_IDENTITY`以及`PROVISIONING_PROFILE`的值就是`buildsetting`中选择的证书和`profile`文件对应的值。
 
-3 `PROVISIONING_PROFILE`通过xcode,`command+,`选择Accounts->证书对应的账号->View Details ->选择对应的profile->show in finder ->文件名就是PROVISIONING_PROFILE对应的值。
+2 注意，要将工程的bundle id与描述性文件中的bundle id保持一致
 
-4 此时的签名信息为
+3 `CODE_SIGN_IDENTITY`可以通过钥匙串来查看，证书完整的名字就是对应的值
+
+4 `PROVISIONING_PROFILE`通过xcode,同时按住`command`和`,`,然后选择Accounts->证书对应的账号->View Details ->选择对应的profile->show in finder ->文件名就是PROVISIONING_PROFILE对应的值。
+
+5 此时的签名信息为
 
 Signing Identity:     "iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)"
 
