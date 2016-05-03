@@ -17,10 +17,11 @@ categories: blog
 ### 相关命令
 通过[ios打包--xcodebuild以及xcrun](http://www.lhjzzu.com/2016/04/29/ios-xcodebuild/)这篇文章的学习，我们可以知道这样两条关键性的命令
 
-* xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"
-* xcrun -sdk iphoneos -v PackageApplication ./build/Release-iphoneos/Test.app -o ~/Desktop/ipa/Test.ipa
 
-注意:
+* `xdebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
+* `xcun -sdk iphoneos -v PackageApplication ./build/Release-iphoneos/Test.app -o ~/Desktop/ipa/Test.ipa`
+
+意:
 
 1 第一条命令是生成.app文件，第二条命令是由.app文件生成.ipa文件
 
