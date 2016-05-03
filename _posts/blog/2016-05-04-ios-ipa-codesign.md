@@ -8,7 +8,9 @@ categories: blog
 
 
 ## 证书和密匙
+
 ### 证书信息
+
 代码签名的核心是一个证书，一个公钥和一个私钥
 ![](http://7xqijx.com1.z0.glb.clouddn.com/cer.png)
 
@@ -214,19 +216,32 @@ Xcode 会自动生成一个entitlements文件(plist格式),文件格式如下
 * 修改`Bundle identifier`有些弊端是不能进行微博登录，并且不能收到推送等等。
 
 
-#### 方法二：使用工具iReSign
+#### 方法二:使用工具iReSign
+
+![](http://7xqijx.com1.z0.glb.clouddn.com/iResign.png)
 
 1 下载[iReSign](https://github.com/maciekish/iReSign)工具
 
 2 选择`.ipa`,`embedded.mobileprovision`,`entitlements.plist`文件
 
-3 要修改`Bundle identifier`为`embedded.mobileprovision`的`Bundle identifier`
+3 需要修改`Bundle identifier`为`embedded.mobileprovision`的`Bundle identifier`，否则不能通过。
 
 4 点击重新签名
+
 
 注意: 
 
 * 修改`Bundle identifier`有些弊端是不能进行微博登录，并且不能收到推送等等。
+
+#### 方法三:自动化脚本(autoResign)
+
+1 这是我写的脚本[autoResign](https://github.com/lhjzzu/autoResign),你可以下载直接使用
+
+2 用法 `$ python autoResign.py -f DV`,如果成功会生成一个`DV_Resign.ipa`文件
+
+3 如果第二次执行该命令，会出现 `Archive:  DV.ipa
+replace Payload/DV.app/_CodeSignature/CodeResources? [y]es, [n]o, [A]ll, [N]one, [r]ename: `,直接输入A，然后enter即可。
+
 
 
 ## 参考
