@@ -29,9 +29,15 @@ code signing ，packageing四个阶段。
 ## build setting
 
 
-待完成
+    Prefix Header ->${SRCROOT}/工程名/文件名.pch
+    Framework Search Paths -> $(PROJECT_DIR)/DV/Frameworks/Lib/QQSDK）
+    Header Search Paths -> "${PODS_ROOT}/Headers/Public/AFNetworking"
+    Library Search Paths -> $(PROJECT_DIR)/DV/Frameworks/Lib/PingcooSDK
+    Oher Linker Flags -> -ObjC 或者 -all_load
+    Code Signing Identity -> 选择证书
+    Provisioning Profile -> 选择对用的配置文件
 
-
+先列举我常用的，以后会继续补充
 
 ## 参考文章
 
