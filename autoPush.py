@@ -1,6 +1,5 @@
 from optparse import OptionParser
 import subprocess
-import requests
 
 def autoPush(message):
     addCmd = 'git add .'
