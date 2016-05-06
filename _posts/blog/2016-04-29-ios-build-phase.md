@@ -41,7 +41,7 @@ code signing ，packageing四个阶段。
 
 ## 参考文章
 
-1 [Build 过程](http://objccn.io/issue-6-1/)
+* [Build 过程](http://objccn.io/issue-6-1/)
 
 
 
