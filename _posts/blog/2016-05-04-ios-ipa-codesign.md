@@ -243,6 +243,20 @@ Xcode 会自动生成一个entitlements文件(plist格式),文件格式如下
 replace Payload/DV.app/_CodeSignature/CodeResources? [y]es, [n]o, [A]ll, [N]one, [r]ename: `,直接输入A，然后enter即可。
 
 
+## 补充:
+
+### 设置别名--彻底解放
+
+我们可以把我们的某些命令，设置一个简单的别名，那么在我们执行的时候，只需输入别名即可
+
+    1 cd ~
+    2 vi .bash_profile
+    3 点击i,进入输入模式，
+      输入:alias resign='python autoResign.py -f'
+      点击esc，shift+:,wq 退出
+    4 source .bash_profile
+    5 进入对应的文件夹，在终端中resign DV即可。
+
 
 ## 参考
 * [代码签名探析](http://objccn.io/issue-17-2/)
