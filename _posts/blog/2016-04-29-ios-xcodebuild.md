@@ -244,7 +244,7 @@ categories: blog
 3 作用是编译生成`xx.app`文件
 
 
-    $ xcodebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"
+    $ xcodebuild -project Test.xcodeproj -target Test -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"
 
 1 当我们使用xcode来进行打包的时候，`CODE_SIGN_IDENTITY`以及`PROVISIONING_PROFILE`的值就是`buildsetting`中选择的证书和`profile`文件对应的值。
 

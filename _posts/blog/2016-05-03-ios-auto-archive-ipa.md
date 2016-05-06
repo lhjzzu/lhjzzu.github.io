@@ -17,9 +17,18 @@ categories: blog
 ### 相关命令
 通过[ios打包--xcodebuild以及xcrun](http://www.lhjzzu.com/2016/04/29/ios-xcodebuild/)这篇文章的学习，我们可以知道这样两条关键性的命令
 
+第一条命令
+如果没有.xcworkspace文件
 
-* `xdebuild -project Test.xcodeproj -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
-* `xcun -sdk iphoneos -v PackageApplication ./build/Release-iphoneos/Test.app -o ~/Desktop/ipa/Test.ipa`
+* `xdebuild -project Test.xcodeproj -target DV -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
+
+如果有.xcworkspace文件
+
+* `xdebuild -workspace DV.xcworkspace -scheme DV -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
+
+第二条命令
+
+* `xcrun -sdk iphoneos -v PackageApplication ./build/Release-iphoneos/Test.app -o ~/Desktop/ipa/Test.ipa`
 
 意:
 
