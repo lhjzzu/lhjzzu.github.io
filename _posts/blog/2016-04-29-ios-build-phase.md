@@ -2,7 +2,7 @@
 layout: post
 title: ios打包--build过程探析（一）
 date: 2016-04-29
-categories: blog
+categories: IOS
 
 
 ---

@@ -2,7 +2,7 @@
 layout: post
 title: ios打包--脚本自动化打包并上传到蒲公英(三)
 date: 2016-05-03
-categories: blog
+categories: IOS
 
 
 ---
