@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Cocoapods系列:制作自己的pods(二)
-date: 2016-05-09
+date: 2016-05-10
 categories: IOS
 
 ---
@@ -406,7 +406,7 @@ Classes文件夹与MakeCocoapods文件夹同级，并且把`MakeCocoapods.h`，`
 
 ## FAQ  
 
-1 执行`$ pod spec lint MakeCocoapods.podspec --verbose`，这条命令到底干了什么，它仅仅是验证我们的.podspec本身吗？它是如何保证我们工程的有效性了？
+### 执行`$ pod spec lint MakeCocoapods.podspec --verbose`，这条命令到底干了什么，它仅仅是验证我们的.podspec本身吗？它是如何保证我们工程的有效性了？
     
         我们可以大致分析一下终端中执行的大致过程
             
@@ -441,7 +441,7 @@ Classes文件夹与MakeCocoapods文件夹同级，并且把`MakeCocoapods.h`，`
 * 然后验证 `MakeCocoapods.podspec`的其他选项，看`.podspec`是否通过验证
  
  
-2 对`$ pod trunk push MakeCocoapods.podspec --verbose`进行分析？
+### 对`$ pod trunk push MakeCocoapods.podspec --verbose`进行分析？
 
         Updating spec repo `master`
         CocoaPods 1.0.0.rc.2 is available.
@@ -489,16 +489,16 @@ Classes文件夹与MakeCocoapods文件夹同级，并且把`MakeCocoapods.h`，`
 * 再次更新我们的pod，这时我们的`.podspec`已经push成功了，接下来打印出了相应的信息。
         
 
-3 什么情况下表明已经通过创建成功了呢？ 
+### 什么情况下表明已经通过创建成功了呢？ 
 
 * 当你能用`$ pod search xxx` 搜索到自己的库的时候，那么已经创建成功了，别人搜索不到是因为他们的库没有更新，执行`$ pod setup`操作即可
 
-4 为什么在其他人电脑上有的人搜得到，有的人搜不到呢？
+### 为什么在其他人电脑上有的人搜得到，有的人搜不到呢？
    
 * 因为有的人在`$ pod install`或者`$ pod update`时常常会这么写：`$ pod update --no-repo-update`，加了后面那一串就表示“只更新我指定的库到我的电脑，而不是cocoaPods成千上万个库一起更新”。
 * 如果你单单使用`$ pod install`或者`$ pod update`，那应该就可以搜得到你的库。
  
-5 为什么随便写的代码也能通过审核，审核的机制是什么？
+### 为什么随便写的代码也能通过审核，审核的机制是什么？
 
 * 我们从问题1以及问题2可以看出，`Cocoapods`仅仅上保证我们工程编译能够成功，仅仅是验证`.podspec`文件的有效性
 * 总结来说它校验的是格式，而不是检验我们代码的质量。

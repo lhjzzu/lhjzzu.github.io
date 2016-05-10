@@ -9,16 +9,16 @@ categories: IOS
 
 ## 什么是Cocoapods？
 
-* Cocoapods是用来管理xcode项目依赖库的。
-* 你的工程的依赖在一个名字是`Podfile`的文本文件中被指定.CocoaPods将解决不同库之间依赖的问题。获取源码并把这些库一起链接到一个`xcode workspace`文件中去创建你的项目。
-* Cocoapods最终的目标是创建一个更集中化的生态系统去提高第三方开源库的可发现性，可使用性。
+* `Cocoapods`是用来管理`xcode`项目依赖库的。
+* 你的工程的依赖在一个名字是`Podfile`的文本文件中被指定.`CocoaPods`将解决不同库之间依赖的问题。获取源码并把这些库一起链接到一个`.xcworkspace`文件中去创建你的项目。
+* `Cocoapods`最终的目标是创建一个更集中化的生态系统去提高第三方开源库的可发现性，可使用性。
 
 
 ## Cocopods安装
 
-Cocoapods是用ruby来创建的，我们使用OS X 默认的可用的ruby来安装Cocoapods.你也可以使用ruby的版本管理，来更改ruby版本进行安装，但是官方还是建立使用OS X 默认的ruby来安装。
+`Cocoapods`是用`ruby`来创建的，我们使用`OS X `默认的可用的`ruby`来安装`Cocoapods`.你也可以使用`ruby`的版本管理，来更改`ruby`版本进行安装，但是官方还是建议使用`OS X `默认的`ruby`来安装。
 
-唯一的问题是:当我们使用默认的ruby来进行安装gems的时候，需要使用sudo。
+唯一的问题是:当我们使用默认的ruby来进行安装`gems`的时候，需要使用`sudo`。
 
 1 `$ sudo gem install -n /usr/local/bin cocoapods`
 
@@ -36,11 +36,11 @@ Cocoapods是用ruby来创建的，我们使用OS X 默认的可用的ruby来安�
 
 4 接着再执行 `sudo gem install -n /usr/local/bin cocoapods`
 
-5 安装cocoapods库
+5 安装`cocoapods`库
 
 `$ pod setup` 
 
-第一个执行会非常慢，可以到/.cocoapods文件夹下看安装进度
+第一个执行会非常慢，可以到`/.cocoapods`文件夹下看安装进度
 
 
 
@@ -50,7 +50,7 @@ Cocoapods是用ruby来创建的，我们使用OS X 默认的可用的ruby来安�
 
 ## Cocoapods使用
 
-1. 建立一个工程CocoapodsTest
+1. 建立一个工程`CocoapodsTest`
 2. cd 进入这个工程文件夹
 3. 输入`$ vi Pofile`建立并打开`Podfile`文件。点击i，进入输入模式，输入下列内容后，按`esc`,`shift+:`,`wq`保存并退出
       
@@ -58,7 +58,7 @@ Cocoapods是用ruby来创建的，我们使用OS X 默认的可用的ruby来安�
         pod 'AFNetworking', '~> 3.1.0'
         end
 
-4. 执行pod install --verbose --no-repo-update即可
+4. 执行`$ pod install --verbose --no-repo-update`即可
  
         Analyzing dependencies
         Inspecting targets to integrate
@@ -71,10 +71,10 @@ Cocoapods是用ruby来创建的，我们使用OS X 默认的可用的ruby来安�
         Downloading dependencies
         -> Installing AFNetworking (3.1.0)
         .......
-5. 执行成功生成.xworkspace文件，Podfile.lock文件，Pods文件夹。以后，项目操作就在.xworkspace文件中。
+5. 执行成功生成`.xworkspace`文件，`Podfile.lock`文件，`Pods`文件夹。以后，项目操作就在`.xworkspace`文件中。
 
 
-可以使用`$ pod search AFNetworking`来查看AFNetworking的版本信息
+可以使用`$ pod search AFNetworking`来查看`AFNetworking`的版本信息
 
     -> AFNetworking (3.1.0)
        A delightful iOS and OS X networking framework.
@@ -101,12 +101,12 @@ Cocoapods是用ruby来创建的，我们使用OS X 默认的可用的ruby来安�
 
 ### 什么是Podfile？
 
-`Podfile`是描述一个或多个xcode工程的的目标依赖的一个说明书。这个文件必须被命名为`Podfile`。
+`Podfile`是描述一个或多个`xcode`程的的目标依赖的一个说明书。这个文件必须被命名为`Podfile`。
 
 ### Podfile文件所在的位置
 
-* 推荐吧Podfile文件存在工程根目录下
-* 如果把Podfile文件存在工程其他目录下，需要在Podfile中执行xx.xcodeproj文件的路径
+* 推荐把`Podfile`文件存在工程根目录下
+* 如果把`Podfile`文件存在工程其他目录下，需要在`Podfile`中指定`xx.xcodeproj`文件的路径
 
         xcodeproj "/Users/chiyou/Desktop/CocoaPodsTest/CocoaPodsTest.xcodeproj" 
     
@@ -125,13 +125,13 @@ Cocoapods是用ruby来创建的，我们使用OS X 默认的可用的ruby来安�
 
 ### Podfile与target
 
-Podfile与一个target
+`Podfile`与一个`target`
 
     target 'target1' do
      pod 'AFNetworking'
      end
  
-Podfile与多个target
+`Podfile`与多个`target`
 
      target 'target1' do
      pod 'AFNetworking'
@@ -141,57 +141,60 @@ Podfile与多个target
      pod 'AFNetworking'
      end
      
-Podfile默认的target为第一个target，我们可以这样写
+`Podfile`默认的`target`为第一个`target`，我们可以这样写
      
      pod 'AFNetworking'
 
 
 ### Podfile.lock
 
-- 在开始使用CocoaPods，执行完pod install之后，会生成一个Podfile.lock文件
+- 在开始使用`CocoaPods`，执行完`pod install`之后，会生成一个`Podfile.lock`文件
 - 该文件用于保存已经安装的Pods依赖库的版本
-- 在podfile文件中不指定库的版本(`pod 'AFNetworking', '= 2.6.3'`指定版本)，那么团队协作开发时，别人check下来的工程，如果有这个Podfile.lock文件，那么在执行pod install 获取的库的版本与最开始用户获取的版本相同
-- 如果缺少Podfile.lock文件,那么在执行pod install 就会获取最新的版本，会造成团队使用的库版本不一致，这是很严重的问题
-- 这种情况下，如果团队想要使用最新版的AFNetworking，那么可以使用pod update 或者 Podfile中直接指定最新的版本号
-- 综上所述，Podfile.lock一定要纳入版本管理中去
+- 在`Podfile`文件中不指定库的版本(`pod 'AFNetworking', '= 2.6.3'`指定版本)，那么团队协作开发时，别人`check`下来的工程，如果有这个`Podfile.lock`文件，那么在执行`pod install `获取的库的版本与最开始用户获取的版本相同
+- 如果缺少`Podfile.lock`文件,那么在执行`pod install` 就会获取最新的版本，会造成团队使用的库版本不一致，这是很严重的问题
+- 这种情况下，如果团队想要使用最新版的`AFNetworking`，那么可以使用`pod update` 或者 `Podfile`中直接指定最新的版本号
+- 综上所述，`Podfile.lock`一定要纳入版本管理中去
 
 
 ## pod install 和 pod update
 
 ### pod install 
 
-Podfile版本写死的情况:
+`Podfile`版本写死的情况:
 
 1 直接等于某个版本
 
     Pod 'AFNetworking', '2.6.3' 
  
-2相当于直接等于某个版本（因为2.6.x的版本中2.6.3就是最高版本了,我们写2.6.x获取的版本肯定是2.6.3）
+2 相当于直接等于某个版本
+
+因为2.6.x的版本中2.6.3就是最高版本了,我们写2.6.x获取的版本肯定是2.6.3
 
     Pod 'AFNetworking', '> 2.6.x' 
     Pod 'AFNetworking', '>= 2.6.x' 
 
 
-- 如果版本写死，有没有Podfile.lock文件都没有影响，执行Pod install，不会更改库的版本
-- 如果版本未写死，有Podfile.lock文件，执行Pod install，不会更改库的版本
-- 如果版本未写死，没有Podfile.lock文件，且库版本未更新，执行Pod install，不会更改库的版本
-- 如果版本未写死，没有Podfile.lock文件，且库版本更新，执行Pod install，**会更改库的版本**
-- 如果用`pod install --verbose --no-repo-update` 意思是只安装，不更新pods库中的资源。如果经常执行`pod install --verbose --no-repo-update`会导致我们的库版本会低很多。一些新的库或者某些库的新的版本通过`pod search xxx` 会搜索不到
-- 如果更改Podfile文件，且更改后应该安装的版本与原来的不一样，无论是否有Podfile.lock文件，执行Pod install，**会更改库的版本**。
+- 如果版本写死，有没有`Podfile.lock`文件都没有影响，执行`Pod install`，不会更改库的版本
+- 如果版本未写死，有`Podfile.lock`文件，执行`Pod install`，不会更改库的版本
+- 如果版本未写死，没有`Podfile.lock`文件，且库版本未更新，执行`Pod install`，不会更改库的版本
+- 如果版本未写死，没有`Podfile.lock`文件，且库版本更新，执行`Pod install`，**会更改库的版本**
+- 如果用`pod install --verbose --no-repo-update` 意思是只安装，不更新`pods`库中的资源。如果经常执行`pod install --verbose --no-repo-update`会导致我们的库版本会低很多。一些新的库或者某些库的新的版本通过`pod search xxx` 会搜索不到
+- 如果更改`Podfile`文件，且更改后应该安装的版本与原来的不一样，无论是否有`Podfile.lock`文件，执行`Pod install`，**会更改库的版本**。
 
 ### pod update
 
-- 如果Podfile中指定的依赖库版本不是写死的（pod 'AFNetworking'），当对应的依赖库有了更新，无论有没有Podfile.lock文件都会去获取Podfile文件描述的允许获取到的最新依赖库版本。
-- 如果Podfile中指定的依赖库版本是写死的（pod 'AFNetworking', '2.3.1'），那么执行pod update根本没有作用。
+- 如果`Podfile`中指定的依赖库版本不是写死的（`pod 'AFNetworking'`），当对应的依赖库有了更新，无论有没有`Podfile.lock`文件都会去获取`Podfile`文件描述的允许获取到的最新依赖库版本。
+- 如果`Podfile`中指定的依赖库版本是写死的（`pod 'AFNetworking', '2.3.1'`），那么执行`pod update`根本没有作用。
 
-## podspec
+## FAQ
 
+### 工程中Pods无效?
 
+可能我们拉取别人的代码，或者下载网上的代码是会出现Pods失效报错的情况
 
+由于工程中依旧存在`Podfile`和`Podfile.lock`文件,所以我们只需要进入工程文件然后执行`pod install --verbose --no-repo-update` 即可
 
-
-
-
+但是有时它并不起作用，依旧没有把对应的库导入进来，这个时候我们最终极的解决方案是删除`Pods`文件夹，删除`.xcworkspec`文件，然后再次执行`pod install --verbose --no-repo-update`即可
 
 
 ## 参考
