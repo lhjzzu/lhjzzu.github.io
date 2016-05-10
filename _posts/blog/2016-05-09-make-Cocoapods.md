@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Cocoapods系列(二):制作自己的pods
+title: Cocoapods系列:制作自己的pods(二)
 date: 2016-05-09
 categories: IOS
 
