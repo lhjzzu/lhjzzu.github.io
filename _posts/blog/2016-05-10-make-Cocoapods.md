@@ -344,10 +344,10 @@ Classes文件夹与MakeCocoapods文件夹同级，并且把`MakeCocoapods.h`，`
         s.platform = :ios, "5.0"相当于s.platform= :ios
         和s.ios. s.ios.deployment_target = "5.0"
   
-* s.version要与tag保持一致否则验证时会报警告
+* `s.version`要与`tag`保持一致否则验证时会报警告
 
         - WARN  | source: The version should be included in the Git tag.
-* tag一定要是已经提交过的tag，例如我们现在打了tag为0.01的标签，那么如果把tag该为0.02,那么验证时会告诉我们找不到tag为0.0.2的分支
+* `tag`一定要是已经提交过的`tag`，例如我们现在打了`tag`为`0.01`的标签，那么如果把tag改为0.02,那么验证时会告诉我们找不到`tag`为`0.0.2`的分支
    
          - ERROR | [iOS] unknown: Encountered an unknown error ([!] /usr/local/bin/git clone https://github.com/lhjzzu/MakeCocoapods.git /var/folders/fk/l6j6lbss3jn84g7xvsb2l4mw0000gn/T/d20160510-20861-1tcybky --single-branch --depth 1 --branch 0.0.2
 
@@ -355,7 +355,7 @@ Classes文件夹与MakeCocoapods文件夹同级，并且把`MakeCocoapods.h`，`
          warning: Could not find remote branch 0.0.2 to clone.
          fatal: Remote branch 0.0.2 not found in upstream origin
          
-* s.license要把(example)删除掉，否则验证时，会报下面的错误(在以前时并没有影响,现在要删掉)
+* `s.license`要把`(example)`删除掉，否则验证时，会报下面的错误(在以前时并没有影响,现在要删掉)
   
         -> MakeCocoapods (0.0.1)
             - ERROR | license: Sample license type.
