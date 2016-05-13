@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ios打包:打包静态库(五)
+title: ios打包--打包静态库(五)
 date: 2016-05-06
 categories: IOS
 
