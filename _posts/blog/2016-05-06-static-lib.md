@@ -15,7 +15,7 @@ categories: IOS
 ## 建立静态库步骤
 
 ### 建立一个静态库工程
-![]()
+![](http://7xqijx.com1.z0.glb.clouddn.com/StaticLib.png)
 
 
 ### 建立相应的文件，并写入自己的代码
