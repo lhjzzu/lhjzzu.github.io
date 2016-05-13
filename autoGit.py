@@ -58,6 +58,8 @@ def main():
     parser = OptionParser()
     parser.add_option("-m","--message", help="Commit Message",metavar="message")
     parser.add_option("-b","--branch", help="branch name",metavar="branch name")
+    parser.add_option("-mb","--mergeBranch", help="mergeBranch",metavar="mergeBranch name")
+
 
     (options, args) = parser.parse_args()
     message = options.message

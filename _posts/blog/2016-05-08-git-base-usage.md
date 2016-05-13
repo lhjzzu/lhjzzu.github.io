@@ -492,7 +492,17 @@ Git用`<<<<<<<`，`=======`，`>>>>>>>`标记出不同分支的内容，我们�
     git config --global alias.last 'log -1'
     git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
+
+## autoGit脚本
+
+1 关于`Git`推送的逻辑我写了一个[autoGit](https://github.com/lhjzzu/autoGit)，你可以直接下载查看
+
+2 用法我已经在README.md中说的很清楚了，就不赘述了。
+
 ## FAQ
+
+> 第3，4个问题的答案仅作参考，它们并不总是适用，因为我对`.gitignore`的理解有限，所以暂时没有好的方法。
+
 
 ### 1 如何查看所有的历史commit？
 
