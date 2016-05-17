@@ -6,7 +6,6 @@ categories: IOS
 
 ---
 
-
 ## 静态库的一点理解
 * 当我们不想让我们的.m文件中的内容让别人看到时，可以打包成静态库，来保护我们的源码
 * .a文件是.m文件编译成.o文件(目标文件)后的集合
@@ -236,10 +235,14 @@ categories: IOS
 
 假如有这样一个场景:我们要创建一个`B.a`静态库，但是我们的`B.a`依赖`A.a`，如果我们不想要把`A.a`文件打包到我们的`B.a`中。我们只需要导入`A.a`对应的.h文件即可。(实质上是只要`BuildPhase->Link Binary With Libraries中`不存在`A.a`即可)
 
+### 假如我们静态库中打包了对某一个分类文件(例如 UIView + Extension)文件？
+
+我们需要在`使用这个lib的工程`的`Build Settings`中设置，`other Linker flags` -> 为`NO`.
+
 ### 静态库工程中Command+B检查文件是否存在以及是否重复?
  
 文件的存在:
-说回上一个问题:为什么只需导入`A.a`对应的`.h`文件即可？(下面所指的文件的索引必须在静态库工程中)
+说回上一个问题:为什么只需导入`A.a`对应的`.h`文件即可？
 
 `#import "MyClass.h"`,这句话是导入我们的.h文件，所以在`Command+b`的过程中只是检查`.h`文件是否存在，就能保证编译通过。如果`.m`文件在`BuildPhase->Compile Source`中就会被编译，如果不存在那里就不会被编译.
 
@@ -252,9 +255,11 @@ categories: IOS
 
 2 假如我们工程中有`StaticLib.m`文件，我们导入`.a`文件也有`StaticLib.o`文件,那么我们编译的过程中会报`StaticLib.o`文件重复的问题. 假如`StaticLib.m`生成的`StaticLib.o`文件与在`.a`中`StaticLib.o`的内容是一样的，那么删除`StaticLib.m`文件即可
 
+
 ### 不同第三方.a冲突的处理?
 
 一般而言是因为它们使用了同样的库，并且没有对库做任何处理，可以参考[这篇文章](http://www.ithao123.cn/content-767025.html)
+
 
 
 ## 参考

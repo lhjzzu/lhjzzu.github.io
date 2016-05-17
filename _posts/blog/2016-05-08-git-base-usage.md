@@ -1,6 +1,6 @@
 ---
 layout: post
-title: git基本用法
+title: Git基本用法
 date: 2016-05-08
 categories: Git
 

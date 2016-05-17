@@ -13,11 +13,11 @@ def autoPush(message,branch):
     process.wait()
     code = process.returncode
     if code != 0:
-        print "error"
+        print "Push error,you need pull from the origin branch"
         autoPull(branch)
         pass
     else:
-        print "success"
+        print "Push success"
 
 def autoPull(branch):
     pullCmd = 'git pull'
@@ -25,11 +25,12 @@ def autoPull(branch):
     process.wait()
     code = process.returncode
     if code != 0:
-        print "error"
+        print "Pull error, you must setup the steam between the current branch with the orign branch"
         setupStream(branch)
         pass
     else:
-        print "success"
+        print "Pull success"
+        autoFastForward(branch)
 
 def setupStream(branch):
     setCmd = 'git branch --set-upstream-to=origin/%s %s' %(branch,branch)
@@ -37,10 +38,10 @@ def setupStream(branch):
     process.wait()
     code = process.returncode
     if code != 0:
-        print "error"
+        print "setupStream error"
         pass
     else:
-        print "success"
+        print "setupStream sucess, pull again"
         autoPull(branch)
 
 def autoFastForward(branch):
@@ -49,22 +50,33 @@ def autoFastForward(branch):
     process.wait()
     code = process.returncode
     if code != 0:
-        print "error"
+        print "fastForward error, you must resolve conflict, finally execute this script again"
         pass
     else:
-        print "success"
+        print "fastForward success"
+
+
+
 
 def main():
     parser = OptionParser()
     parser.add_option("-m","--message", help="Commit Message",metavar="message")
     parser.add_option("-b","--branch", help="branch name",metavar="branch name")
-    parser.add_option("-mb","--mergeBranch", help="mergeBranch",metavar="mergeBranch name")
 
 
     (options, args) = parser.parse_args()
     message = options.message
     branch = options.branch
-    autoPush(message,branch)
+    if branch is None:
+        branch = 'master'
+    else:
+        pass
+    if message is not None and branch is not None:
+        autoPush(message,branch)
+    else:
+        print "error message and branch can't be None"
+        pass
+
 if __name__ == '__main__':
 	main()
 
