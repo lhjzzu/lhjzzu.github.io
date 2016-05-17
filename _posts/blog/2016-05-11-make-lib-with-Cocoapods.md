@@ -89,11 +89,13 @@ categories: IOS
 
 
 
-#### 进入Example文件夹，执行`pod install --verbose --no-repo-update`
+#### 进入Example文件夹
 
-#### 在工程中创建需要的源文件，并将源文件放到`Pod/Classes`中,如果有图片等资源文件，放到`Pod/Assets`中
+ 执行`pod install --verbose --no-repo-update`
 
-####  进入Example文件夹，再次执行`pod install --verbose --no-repo-update`
+ 在工程中创建需要的源文件，并将源文件放到`Pod/Classes`中,如果有图片等资源文件，放到`Pod/Assets`中
+
+ 进入Example文件夹，再次执行`pod install --verbose --no-repo-update`
 
 #### 提交源码并打上标签
 
