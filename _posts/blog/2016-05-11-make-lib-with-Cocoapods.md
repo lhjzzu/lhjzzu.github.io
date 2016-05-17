@@ -18,9 +18,9 @@ categories: IOS
 ## 使用Cocoapods创建lib
 
 
-## 创建工程
+#### 创建工程
 
-### 执行命令`$ pod lib create VCocoapodsLib`，并回答四个问题
+#### 执行命令`$ pod lib create VCocoapodsLib`，并回答四个问题
 
     What language do you want to use?? [ Swift / ObjC ]
     > ObjC
@@ -56,7 +56,7 @@ categories: IOS
     
     
 
-### 打开VCocoapodsLib.podspec文件修改信息如下
+#### 打开VCocoapodsLib.podspec文件修改信息如下
 
      Pod::Spec.new do |s|
        s.name             = "VCocoapodsLib"
@@ -89,29 +89,29 @@ categories: IOS
 
 
 
-### 进入Example文件夹，执行`pod install --verbose --no-repo-update`
+#### 进入Example文件夹，执行`pod install --verbose --no-repo-update`
 
-### 在工程中创建需要的源文件，并将源文件放到`Pod/Classes`中,如果有图片等资源文件，放到`Pod/Assets`中
+#### 在工程中创建需要的源文件，并将源文件放到`Pod/Classes`中,如果有图片等资源文件，放到`Pod/Assets`中
 
-###  进入Example文件夹，再次执行`pod install --verbose --no-repo-update`
+####  进入Example文件夹，再次执行`pod install --verbose --no-repo-update`
 
-### 提交源码并打上标签
+#### 提交源码并打上标签
 
     $ cd /Users/chiyou/Desktop/VCocoapodsLib
     $  git add .
     $  git commit -m '0.1.0'
     $  git tag -a 0.1.0 -m '0.1.0' （标签要与podspec中的版本号一致）
 
-### 验证`.podspec文件`
+#### 验证`.podspec文件`
 
     pod lib lint VCocoapodsLib.podspec  --allow-warnings --verbose
     --allow-warnings:忽略警告 --verbose:打印细节
 
-### 安装插件
+#### 安装插件
 
 `sudo gem install cocoapods-packager`安装插件
 
-### 打包
+#### 打包
 
 `pod package VCocoapodsLib.podspec  --library  --force`
 
