@@ -398,11 +398,51 @@ Classes文件夹与MakeCocoapods文件夹同级，并且把`MakeCocoapods.h`，`
 
  使用初始化`$Pod setup`或者更新`$ Pod repo  update`我们的仓库
   
-  
+
+ 
 
 ### 使用我们的pod 
 
   再建立一个测试工程在Podfile中，输入`pod 'MakeCocoapods', '~ 0.0.1'`，然后安装我们的pod，就可以正常使用我们的pod了。
+
+### `podspec`文件的补充说明
+
+     #这个pod是否被废弃
+     s.deprecated = true
+     #支持（替代）这个废弃的pod的新的pod
+     s.deprecated_in_favor_of = 'NewMoreAwesomePod'
+     
+     # 用户需要弱连接的框架的列表
+     s.weak_framework = 'Twitter'
+     # 应该传递到编译器的标记列表
+     s.compiler_flags = '-DOS_OBJECT_USE_OBJC=0', '-Wno-format'
+     # pods target 中的buildSettings的配置
+     s.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-lObjC' }
+     # 内容注入pod工程的预编译头（prefix header）文件中，这个属性不建议设置，
+     # 因为pods不应该污染用户工程其它libraries的prefix header
+     s.prefix_header_contents = '#import <UIKit/UIKit.h>', '#import <Foundation/Foundation.h>'
+     # 自己创建的framework
+     s.ios.vendored_frameworks = 'Frameworks/MyFramework.framework'
+     s.vendored_frameworks = 'MyFramework.framework', 'TheirFramework.framework'
+     #自己创建的library
+     s.ios.vendored_library = 'Libraries/libProj4.a'
+     s.vendored_libraries = 'libProj4.a', 'libJavaScriptCore.a'
+     
+     #强烈建议使用resource_bundles属性来设置资源图，而不是使用resource(容易导致命名冲突)
+     s.ios.resource_bundle = { 'MapBox' => 'MapView/Map/Resources/*.png' }
+     s.resource_bundles = { 'MapBox' => ['MapView/Map/Resources/*.png'],'OtherResources' 
+     => ['MapView/Map/OtherResources/*.png']}
+     # 默认的子块
+     s.default_subspecs = 'Base', 'AliPay', 'WxPay','UnionPay'
+     # 子块说明（subspec），可以理解为定义一个Base模块，并用base来指代。
+     s.subspec 'Base' do |base|
+     base.source_files = 'lib/*.h'
+     base.public_header_files = 'lib/*.h'
+     base.vendored_libraries = 'lib/*.a'
+     base.frameworks = 'UIKit','Foundation'
+     base.libraries = 'c++', 'stdc++', 'z','sqlite3.0'
+     end
+     
 
 ## FAQ  
 
