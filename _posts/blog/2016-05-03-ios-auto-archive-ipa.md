@@ -20,11 +20,11 @@ categories: IOS
 第一条命令
 如果没有.xcworkspace文件
 
-* `xdebuild -project Test.xcodeproj -target DV -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
+* `xcodebuild -project Test.xcodeproj -target DV -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
 
 如果有.xcworkspace文件
 
-* `xdebuild -workspace DV.xcworkspace -scheme DV -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
+* `xcodebuild -workspace DV.xcworkspace -scheme DV -configuration Release -sdk iphoneos9.3 CODE_SIGN_IDENTITY="iPhone Distribution: Hangzhou Riguan Apparel Co.,ltd (V9LX9F46VG)" PROVISIONING_PROFILE="a97416b6-a868-44c7-8bd5-5847954305bb"`
 
 第二条命令
 
