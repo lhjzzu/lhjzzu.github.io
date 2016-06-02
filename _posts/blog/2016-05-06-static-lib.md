@@ -237,7 +237,7 @@ categories: IOS
 
 ### 假如我们静态库中打包了对某一个分类文件(例如 UIView + Extension)文件？
 
-我们需要在`使用这个lib的工程`的`Build Settings`中设置，`other Linker flags` -> 为`NO`.
+我们需要在`使用这个lib的工程`的`Build Settings`中设置，`other Linker flags` -> 为`-ObjC`.
 
 ### 静态库工程中Command+B检查文件是否存在以及是否重复?
  
