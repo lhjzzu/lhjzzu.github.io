@@ -14,6 +14,7 @@ categories: IOS
 ## 基本结构
 
 如下图所示:
+![](/images/wiki/breaststroke.png)
 
 ![](http://7xqijx.com1.z0.glb.clouddn.com/VSocial.png)
 
@@ -116,7 +117,13 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 ```
 
-qweqwe
+## UI界面
+
+
+
+
+
+
 
 ## 参考
 
