@@ -128,7 +128,7 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 * `UIView+VLoginSocial`对UIView进行了扩展,提供`v_showSocialLoginViewWithFrame:withCompletion:`方法来进行登录视图的调用
 
-![](http://7xqijx.com1.z0.glb.clouddn.com/login.png)
+![](http://7xqijx.com1.z0.glb.clouddn.com/login.png?imageView/2/w/300)
 
 
 
@@ -136,7 +136,7 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 * `UIViewController+VShareSocial`对UIViewController进行了扩展,提供`v_showSocialShareViewWithReq:withCompletion:`方法来进行登录视图的调用.
 
-![](http://7xqijx.com1.z0.glb.clouddn.com/share.png)
+![](http://7xqijx.com1.z0.glb.clouddn.com/share.png?imageView/2/w/300)
 
 ## 参考
 
