@@ -15,7 +15,8 @@ categories: IOS
 
 如下图所示:
 
-![](http://7xqijx.com1.z0.glb.clouddn.com/VSocial.png )
+![](http://7xqijx.com1.z0.glb.clouddn.com/VSocial.png)
+
 
 * 其核心主要包括`VSocial`,`VTencentSocialManager`,`VWeiXinSocialManager`,`VWeiBoSocailManager`这几个管理类.
 * `VTencentSocialManager`,`VWeiXinSocialManager`,`VWeiBoSocailManager`是分别用来管理QQ,微信,微博的相关操作，内部封装的对应的sdk的相关逻辑。
@@ -114,6 +115,8 @@ categories: IOS
 typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,VSocialActionStatus status,NSString *msg);
 
 ```
+
+qweqwe
 
 ## 参考
 
