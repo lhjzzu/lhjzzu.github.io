@@ -14,7 +14,7 @@ categories: IOS
 ## 基本结构
 
 如下图所示:
-![](/images/wiki/breaststroke.png)
+![](/images/VSocial.png)
 
 ![](http://7xqijx.com1.z0.glb.clouddn.com/VSocial.png)
 
