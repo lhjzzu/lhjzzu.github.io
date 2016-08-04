@@ -119,7 +119,7 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 ## 网络请求
 
-微信登录时需要发送请求来获取相关信息，分享时需要下载图片(只提供了图片链接分享)，所以封装了`VNetworkManager.framework`,其内部封装了请求数据和下载图片的两个方法。而这两个方法的实现中是封装的`AFNetworking`，以及`SDWebImage`.
+微信登录时需要发送请求来获取相关信息，分享时需要下载图片(只提供了图片链接分享)，所以封装了`VNetworkManager.framework`,其内部封装了请求数据和下载图片的两个方法。而这两个方法的实现中是封装的`AFNetworking`，以及`SDWebImage`.如何封装请参考[Cocoapods系列:使用Cocoapods制作静态库(三)](http://www.lhjzzu.com/2016/05/10/make-lib-with-Cocoapods/)
 
 
 ## UI界面
@@ -138,9 +138,14 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 ![](http://7xqijx.com1.z0.glb.clouddn.com/share.png?imageView/2/w/300)
 
+
+## 使用
+
+请参考[VSocial](https://github.com/lhjzzu/VSocial)
+
 ## 参考
 
-* [使用CocoaPods开发并打包静态库](http://www.cnblogs.com/brycezhang/p/4117180.html)
+* [Cocoapods系列:使用Cocoapods制作静态库(三)](http://www.lhjzzu.com/2016/05/10/make-lib-with-Cocoapods/)
 
 
      
