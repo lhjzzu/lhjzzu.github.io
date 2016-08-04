@@ -141,7 +141,7 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 ## 使用
 
-请参考[VSocial](https://github.com/lhjzzu/VSocial)
+已经添加了pods支持，具体的使用--请参考[VSocial](https://github.com/lhjzzu/VSocial)，我已经在README.md中将其用法说的非常详细了.
 
 ## 参考
 
