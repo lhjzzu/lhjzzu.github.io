@@ -7,14 +7,15 @@ categories: IOS
 ---
 
 ## 前言
+
 我们在做应用的时候，经常要集成第三方登录和分享这些功能，主要有微信，QQ，微博这三个社交平台。如果我们一个一个的进行集成无疑工作量是挺大的，而且即便是我们曾经集成过，并且把这些社交功能的代码封装的很好，要把原来的代码集成过来也是要做一些配置的。那么这时我们可以用cocoapods来管理我们封装好的社交功能的代码，也即是做一个社会化的组件。例如，友盟这样的组件用起来就很方便，但是我们不知道它内部的实现，并且有什么问题的话，还要依赖于它的更新。那为什么不做一个自己的组件呢？我做了一个社交组件`VSocial`，里面只是简单集成了微信，QQ，微博这三个平台的登录和分享功能，提供出来，仅供参考。(当然我们还是不鼓励重复造轮子，但是真正自己独立做出一个组件的时候，对个人的提升还是很有帮助的)
 
-## 原理
 
-### 基本结构
+## 基本结构
 
 如下图所示:
-![](http://7xqijx.com1.z0.glb.clouddn.com/VSocial.png =700x500)
+
+![](http://7xqijx.com1.z0.glb.clouddn.com/VSocial.png )
 
 * 其核心主要包括`VSocial`,`VTencentSocialManager`,`VWeiXinSocialManager`,`VWeiBoSocailManager`这几个管理类.
 * `VTencentSocialManager`,`VWeiXinSocialManager`,`VWeiBoSocailManager`是分别用来管理QQ,微信,微博的相关操作，内部封装的对应的sdk的相关逻辑。
@@ -25,7 +26,7 @@ categories: IOS
 *  `VSocial`的`handleOpenURL:withCompletion`方法，其内部根据url的scheme来分别调用QQ，微信，微博的`registerWithAppId:`方法。
 *  `VSocial`的`socialWithReq:withType:withCompletion`方法，根据传入的req和type来进行不同应用的登录分享操作.
 
-### 数据类型
+## 数据类型
 
 **1 VSocialAction**
 
@@ -113,7 +114,9 @@ categories: IOS
 typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,VSocialActionStatus status,NSString *msg);
 
 ```
+
 ## 参考
+
 * [使用CocoaPods开发并打包静态库](http://www.cnblogs.com/brycezhang/p/4117180.html)
 
 
