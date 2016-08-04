@@ -14,7 +14,6 @@ categories: IOS
 ## 基本结构
 
 如下图所示:
-![](/images/VSocial.png)
 
 ![](http://7xqijx.com1.z0.glb.clouddn.com/VSocial.png)
 
@@ -117,13 +116,27 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 ```
 
+
+## 网络请求
+
+微信登录时需要发送请求来获取相关信息，分享时需要下载图片(只提供了图片链接分享)，所以封装了`VNetworkManager.framework`,其内部封装了请求数据和下载图片的两个方法。而这两个方法的实现中是封装的`AFNetworking`，以及`SDWebImage`.
+
+
 ## UI界面
 
+**1 登录界面**
+
+* `UIView+VLoginSocial`对UIView进行了扩展,提供`v_showSocialLoginViewWithFrame:withCompletion:`方法来进行登录视图的调用
+
+![](http://7xqijx.com1.z0.glb.clouddn.com/login.png)
 
 
 
+**2 分享界面**
 
+* `UIViewController+VShareSocial`对UIViewController进行了扩展,提供`v_showSocialShareViewWithReq:withCompletion:`方法来进行登录视图的调用.
 
+![](http://7xqijx.com1.z0.glb.clouddn.com/share.png)
 
 ## 参考
 
