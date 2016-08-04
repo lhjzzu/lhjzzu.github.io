@@ -143,6 +143,12 @@ typedef void(^VSocialCompletion) (NSDictionary *infoDic,VSocialActionType type,V
 
 已经添加了pods支持，具体的使用--请参考[VSocial](https://github.com/lhjzzu/VSocial)，我已经在README.md中将其用法说的非常详细了.
 
+## 扩展
+
+同样的做了一个支付的组件[VPay](https://github.com/lhjzzu/VPay)，集成了微信支付，支付宝支付，和银联支付，其内部的架构和`VSocial`是一样的，有兴趣可以看一下。
+
+
+
 ## 参考
 
 * [Cocoapods系列:使用Cocoapods制作静态库(三)](http://www.lhjzzu.com/2016/05/10/make-lib-with-Cocoapods/)
