@@ -21,7 +21,8 @@ runloop接收两种不同source的事件。input sources 发送异步事件，�
 
 图3-1 展示一个runloop的结构和各种sources。input source 发送异步事件给对应的处理，并调用runUntilDate:(NSRunLoop对象来调用)方法在未来的某个日期退出。Timer sources发送事件给它们的处理程序，但是不造成runloop退出。
 
-<img src="http://7xqijx.com1.z0.glb.clouddn.com/runloop-3-1.png" width = "800" height = "400" align=left />
+![](http://7xqijx.com1.z0.glb.clouddn.com/runloop-3-1.png?imageView/2/w/800)
+
 
 除了处理input source, runloop也生成关于runloop行为的通知。被注册的runloop的观察者能够接收到这些runloop通知，并在线程上使用这些通知去做额外的处理。在你的线程上，你能使用Core Foundation去安装runloop的observers。
 
@@ -342,8 +343,8 @@ Cocoa的NSRunLoop类不像Core Foundation那样具有与生俱来的线程安全
 
 图3-2 展示了一个自定义input source的配置示例。在这个例子中，应用的主线程维护对input sources以及input sources的command buffer(命令缓存区)的引用，并且input sources安装到run loop中.当主线程中有一个任务想要交给工作线程时，它发送一个command给工作线程的command buffer以及任何工作线程执行任务所需要的信息(因为主线程和input sources的工作线程都有权访问command buffer，所以访问必须是同步的)。一旦一个command被发出，主线程发信号给input source并且唤醒工作线程的runloop。在收到唤醒command后，runloop调用input source的处理程序--来执行在command buffer内相应的命令.
 
+![](http://7xqijx.com1.z0.glb.clouddn.com/runloop-3-2.png?imageView/2/w/800)
 
-<img src="http://7xqijx.com1.z0.glb.clouddn.com/runloop-3-2.png" width = "800" height = "400" alt="图片名称" align=left />
 
 下面的部分展示了自定义input source的实现，并展示了你需要实现的关键代码
 
