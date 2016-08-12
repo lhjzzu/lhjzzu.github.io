@@ -170,7 +170,7 @@ Cocoa和Core Foundation通过使用与端口相关的对象和函数，为创建
  在runloop运行期间，由于定时器和其他周期性的事件被周期性的发送，要避免循环破坏这些事件的传递。典型的例子是:当你进行鼠标拖拽时，会执行`mouse-tracking`程序。定时器不会被触发直到`mouse-tracking`程序退出。
  
  
- 使用runloop对象，可以使runloop明确的被唤醒。其他事件也可以造成runloop将被唤醒。例如:添加一个`non-port-based input source `的input source去唤醒runloop，目的是让这个input source能立即被执行,而不是让它等待直到一些其它的事件发生。??????
+ 使用runloop对象，可以使runloop明确的被唤醒。其他事件也可以造成runloop将被唤醒。例如:添加一个`non-port-based input source `的input source去唤醒runloop，目的是让这个input source能立即被执行,而不是让它等待直到一些其它的事件发生。??????(不理解)
  
 ## When Would You Use a Run Loop?
 
@@ -498,8 +498,11 @@ void RunLoopSourceCancelRoutine (void * info, CFRunLoopRef rl, CFStringRef mode)
 
 ```
 
-注意: 
+
+__注意:__
+
   1 `registerSource:`函数调用了先前定义在表3-4的 `RunLoopSourceScheduleRoutine`方法
+  
   2 `removeSource:`函数调用了先前定义在表3-4的 `RunLoopSourceCancelRoutine`方法
 
 
