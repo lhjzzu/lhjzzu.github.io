@@ -21,8 +21,7 @@ runloop接收两种不同source的事件。input sources 发送异步事件，�
 
 图3-1 展示一个runloop的结构和各种sources。input source 发送异步事件给对应的处理，并调用runUntilDate:(NSRunLoop对象来调用)方法在未来的某个日期退出。Timer sources发送事件给它们的处理程序，但是不造成runloop退出。
 
-<img src="http://7xqijx.com1.z0.glb.clouddn.com/runloop-3-1.png" width = "800" height = "400" alt="图片名称" align=left />
-
+<img src="http://7xqijx.com1.z0.glb.clouddn.com/runloop-3-1.png" width = "800" height = "400" align=left />
 
 除了处理input source, runloop也生成关于runloop行为的通知。被注册的runloop的观察者能够接收到这些runloop通知，并在线程上使用这些通知去做额外的处理。在你的线程上，你能使用Core Foundation去安装runloop的observers。
 
