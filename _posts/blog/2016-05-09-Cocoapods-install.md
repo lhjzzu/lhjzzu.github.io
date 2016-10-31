@@ -34,11 +34,25 @@ categories: IOS
     $ gem sources -a https://ruby.taobao.org/
     $ gem sources -l
 
+
+**UPDATA 16.10.31**
+注意:`https://ruby.taobao.org/`不再维护,现在应使用`https://gems.ruby-china.org`
+
+
 4 接着再执行 `sudo gem install -n /usr/local/bin cocoapods`
 
 5 安装`cocoapods`库
 
 `$ pod setup` 
+
+
+**UPDATA 16.10.31**
+注意:`pod setup`安装成功之后，`pod search xxx`可能搜索不到所要的库，此时可以
+
+* 在终端中执行`rm ~/Library/Caches/CocoaPods/search_index.json`
+* 删除成功后再执行`pod search xxx`
+* 执行后出现`Creating search index for spec repo 'master'.. Done!`等待执行完成即可.
+
 
 第一个执行会非常慢，可以到`/.cocoapods`文件夹下看安装进度
 
