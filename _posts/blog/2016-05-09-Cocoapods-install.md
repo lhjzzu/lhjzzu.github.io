@@ -36,6 +36,7 @@ categories: IOS
 
 
 **UPDATA 16.10.31**
+
 注意:`https://ruby.taobao.org/`不再维护,现在应使用`https://gems.ruby-china.org`
 
 
@@ -47,6 +48,7 @@ categories: IOS
 
 
 **UPDATA 16.10.31**
+
 注意:`pod setup`安装成功之后，`pod search xxx`可能搜索不到所要的库，此时可以
 
 * 在终端中执行`rm ~/Library/Caches/CocoaPods/search_index.json`
