@@ -205,12 +205,14 @@ mutableObservedChangedKeyPaths:将从外部设置的属性名存储在该集合�
             }
 
             if (data) {
+                //调用代理方法,创建AFHTTPBodyPart。
                 [formData appendPartWithFormData:data name:[pair.field description]];
             }
         }
     }
     //4 回调block
     if (block) {
+        //调用代理方法,创建AFHTTPBodyPart。
         block(formData);
     }
    
@@ -223,13 +225,503 @@ mutableObservedChangedKeyPaths:将从外部设置的属性名存储在该集合�
 
 
 
+四 上传文件相关的类
+
+1 AFHTTPBodyPart
+
+```
+ 1个或多个AFHTTPBodyPart组装成输入流(AFMultipartBodyStream)，作为NSMutableURLRequest的HTTPBodyStream。
+
+stringEncoding:编码类型
+headers: 外界传入
+boundary:分界标识符
+body: 外界传入
+bodyContentLength:body的长度
+inputStream:输入流
+hasInitialBoundary:是否是初始分界线
+hasFinalBoundary:是否是结束分界线
+bytesAvailable:是否有字节可用
+contentLength:内容的长度
+_phase: 枚举类，AFEncapsulationBoundaryPhase(处理开始/中间分界线的阶段),AFHeaderPhase(处理head的阶段),AFBodyPhase(处理body的阶段),AFFinalBoundaryPhase(处理结束分界线的阶段),
+_inputStream:输入流
+_phaseReadOffset:不同阶段的偏移量
+
+readData:intoBuffer:maxLength: 当_phaseReadOffset长度>=data的长度时，进入到下一个阶段。
+read:maxLength: 通过调用readData:intoBuffer:maxLength:遍历各个阶段,最终返回所读的总字节数，并在各个阶段将分界线数据,header数据,body数据读入到给定的buffer中。
+
+```
+
+
+```
+上传文件的数据组装格式
+
+//分界标识符
+static NSString * AFCreateMultipartFormBoundary() {
+    return [NSString stringWithFormat:@"Boundary+%08X%08X", arc4random(), arc4random()];
+}
+//回车、换行
+static NSString * const kAFMultipartFormCRLF = @"\r\n";
+
+//初始分界线
+static inline NSString * AFMultipartFormInitialBoundary(NSString *boundary) {
+    return [NSString stringWithFormat:@"--%@%@", boundary, kAFMultipartFormCRLF];
+}
+
+//中间的分界线
+static inline NSString * AFMultipartFormEncapsulationBoundary(NSString *boundary) {
+    return [NSString stringWithFormat:@"%@--%@%@", kAFMultipartFormCRLF, boundary, kAFMultipartFormCRLF];
+}
+//结束分界线
+static inline NSString * AFMultipartFormFinalBoundary(NSString *boundary) {
+    return [NSString stringWithFormat:@"%@--%@--%@", kAFMultipartFormCRLF, boundary, kAFMultipartFormCRLF];
+}
+
+例如
+分界线:Boundary+15494D89731AF29C
+初始分界线:--Boundary+15494D89731AF29C\r\n
+中间的分界线:\r\n--Boundary+15494D89731AF29C\r\n
+结束分界线:\r\n--Boundary+15494D89731AF29C--\r\n
+
+
+参数:parameters = @{@"content": @"哈哈哈哈哈哈哈哈哈",
+                   @"contentId":@"123456"}
+2张图片:1.png 2.png 
+
+//上传文件的数据组装格式
+
+--Boundary+15494D89731AF29C
+
+Content-Disposition: form-data; name="content"
+
+哈哈哈哈哈哈哈哈哈
+
+--Boundary+15494D89731AF29C
+
+Content-Disposition: form-data; name="contentId"
+
+123456
+
+--Boundary+15494D89731AF29C
+
+Content-Disposition: form-data; name="pic1"; filename="1.png"
+Content-Type: image/png
+
+<89504e47 0d0a1a0a 0000000d 49484452 00000b40 00000708 08020000 002086d7 4200000c 19694343 50494343 29 1123f6d8 4e6e6660 a4acced8 91dcfca8 51dfae3c b8c06475 c01ea5b3 2647c8f8 63ef0479 11d1326e 380e4281 2ff0034c 20822d19 648374c0 6befafeb 87bf6423 01800584 20157081 e58866d4 234e3ac2 87cf2850 00fe8488 0b72c7fc 7ca4a35c 900ff55f c6b4b2a7 2548918e e64b3d32 c01388b3 704ddc03 77c343e1 d30b365b dc197719 f5632a8e ce4af427 fa118388 0144b331 1e6cc83a 133621e0 fd1b5d08 ecb9303b 0917fe68 0edfe211 9e103a09 8f083708 62c21d10 0b1e4ba3 8c58cde2 150a7f60 ce045380 18460b18 c92e19c6 ec1bb5c1
+....>
+
+--Boundary+15494D89731AF29C
+
+Content-Disposition: form-data; name="pic2"; filename="2.png"
+Content-Type: image/png
+
+<53b9a5d 80dd22bb 7abb57f6 16f65cfb 9df6b71d e80e531c 963b343b 7c717472 143a563b f639193a 25396d77 bae5acea 1ce1bcca f9a20bc1 c5c76591 4ba3cb47 5747d73c d7a3ae7f b959ba65 b81d747b 36c96412 77d2be49 3deefaee 2cf73dee 620fa647 92c76e0f b1a79e27 cbb3dcf3 91978117 c76bbfd7 536f33ef 74ef43de 2f7dac7d 843e277c defbbafa 2ef06df2 c3fc02fd 8afddafd 55fc63fc b7f93f0c d00f480d a80a1808 74089c17 d8144408 0a095a17 742b583b 981d5c19 3c30d969 f282c92d 21d490a8 906d218f 42cd4385 a10d53d0 2993a76c 98723fcc 288c1f56 170ec283 c337843f 883089c8 89f86d2a 716ac4d4 b2a94f22 6d22e747 b646d1a3 66451d8c 7a17ed13 bd26fa5e 
+....>
+
+
+--Boundary+15494D89731AF29C--
+
+
+
+```
+
+
+```
+//通过self.body得到inputStream
+- (NSInputStream *)inputStream {
+    if (!_inputStream) {
+        if ([self.body isKindOfClass:[NSData class]]) {
+            _inputStream = [NSInputStream inputStreamWithData:self.body];
+        } else if ([self.body isKindOfClass:[NSURL class]]) {
+            _inputStream = [NSInputStream inputStreamWithURL:self.body];
+        } else if ([self.body isKindOfClass:[NSInputStream class]]) {
+            _inputStream = self.body;
+        } else {
+            _inputStream = [NSInputStream inputStreamWithData:[NSData data]];
+        }
+    }
+
+    return _inputStream;
+}
+
+//通过self.head得到headerString
+- (NSString *)stringForHeaders {
+    NSMutableString *headerString = [NSMutableString string];
+    for (NSString *field in [self.headers allKeys]) {
+        [headerString appendString:[NSString stringWithFormat:@"%@: %@%@", field, [self.headers valueForKey:field], kAFMultipartFormCRLF]];
+    }
+    [headerString appendString:kAFMultipartFormCRLF];
+
+    return [NSString stringWithString:headerString];
+}
+
+// 内容的长度：分界线的length+head的length+body的length
+- (unsigned long long)contentLength {
+    unsigned long long length = 0;
+    //1 前面的分界线的长度
+    NSData *encapsulationBoundaryData = [([self hasInitialBoundary] ? AFMultipartFormInitialBoundary(self.boundary) : AFMultipartFormEncapsulationBoundary(self.boundary)) dataUsingEncoding:self.stringEncoding];
+    length += [encapsulationBoundaryData length];
+    //2 head的长度
+    NSData *headersData = [[self stringForHeaders] dataUsingEncoding:self.stringEncoding];
+    length += [headersData length];
+    //3 body的length
+    length += _bodyContentLength;
+    //4 后面的分界线的长度 
+    NSData *closingBoundaryData = ([self hasFinalBoundary] ? [AFMultipartFormFinalBoundary(self.boundary) dataUsingEncoding:self.stringEncoding] : [NSData data]);
+    length += [closingBoundaryData length];
+
+    return length;
+}
+
+//是否有可用的字节
+- (BOOL)hasBytesAvailable {
+    // Allows `read:maxLength:` to be called again if `AFMultipartFormFinalBoundary` doesn't fit into the available buffer
+    if (_phase == AFFinalBoundaryPhase) {
+        return YES;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+    switch (self.inputStream.streamStatus) {
+        case NSStreamStatusNotOpen:
+        case NSStreamStatusOpening:
+        case NSStreamStatusOpen:
+        case NSStreamStatusReading:
+        case NSStreamStatusWriting:
+            return YES;
+        case NSStreamStatusAtEnd:
+        case NSStreamStatusClosed:
+        case NSStreamStatusError:
+        default:
+            return NO;
+    }
+#pragma clang diagnostic pop
+}
+
+
+//通过调用readData:intoBuffer:maxLength:遍历各个阶段,最终返回所读的总字节数，并在各个阶段将分界线数据,header数据,body数据读入到给定的buffer中。
+
+- (NSInteger)read:(uint8_t *)buffer
+        maxLength:(NSUInteger)length
+{
+    NSInteger totalNumberOfBytesRead = 0;
+
+    if (_phase == AFEncapsulationBoundaryPhase) {
+        NSData *encapsulationBoundaryData = [([self hasInitialBoundary] ? AFMultipartFormInitialBoundary(self.boundary) : AFMultipartFormEncapsulationBoundary(self.boundary)) dataUsingEncoding:self.stringEncoding];
+        //1 将前面的分界线数据写入到buffer中
+        totalNumberOfBytesRead += [self readData:encapsulationBoundaryData intoBuffer:&buffer[totalNumberOfBytesRead] maxLength:(length - (NSUInteger)totalNumberOfBytesRead)];
+    }
+
+    if (_phase == AFHeaderPhase) {
+        //2 将head写入到buffer中
+        NSData *headersData = [[self stringForHeaders] dataUsingEncoding:self.stringEncoding];
+        totalNumberOfBytesRead += [self readData:headersData intoBuffer:&buffer[totalNumberOfBytesRead] maxLength:(length - (NSUInteger)totalNumberOfBytesRead)];
+    }
+
+    if (_phase == AFBodyPhase) {
+        NSInteger numberOfBytesRead = 0;
+        //3 将body写入到buffer中
+        numberOfBytesRead = [self.inputStream read:&buffer[totalNumberOfBytesRead] maxLength:(length - (NSUInteger)totalNumberOfBytesRead)];
+        if (numberOfBytesRead == -1) {
+            return -1;
+        } else {
+            totalNumberOfBytesRead += numberOfBytesRead;
+
+            if ([self.inputStream streamStatus] >= NSStreamStatusAtEnd) {
+                [self transitionToNextPhase];
+            }
+        }
+    }
+
+    if (_phase == AFFinalBoundaryPhase) {
+        NSData *closingBoundaryData = ([self hasFinalBoundary] ? [AFMultipartFormFinalBoundary(self.boundary) dataUsingEncoding:self.stringEncoding] : [NSData data]);
+        //4 将后面的分界线写入到buffer中
+        totalNumberOfBytesRead += [self readData:closingBoundaryData intoBuffer:&buffer[totalNumberOfBytesRead] maxLength:(length - (NSUInteger)totalNumberOfBytesRead)];
+    }
+
+    return totalNumberOfBytesRead;
+}
+
+
+// 将data写入到buffer中，并判断是否执行到下一阶段。
+- (NSInteger)readData:(NSData *)data
+           intoBuffer:(uint8_t *)buffer
+            maxLength:(NSUInteger)length
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu"
+    NSRange range = NSMakeRange((NSUInteger)_phaseReadOffset, MIN([data length] - ((NSUInteger)_phaseReadOffset), length));
+    //1 将data写入到buffer中
+    [data getBytes:buffer range:range];
+#pragma clang diagnostic pop
+
+    _phaseReadOffset += range.length;
+    
+    if (((NSUInteger)_phaseReadOffset) >= [data length]) {
+    //2 移动到下一阶段
+        [self transitionToNextPhase];
+    }
+
+    return (NSInteger)range.length;
+}
+
+//判断是否移动到下一阶段
+- (BOOL)transitionToNextPhase {
+    if (![[NSThread currentThread] isMainThread]) {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self transitionToNextPhase];
+        });
+        return YES;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+    switch (_phase) {
+        case AFEncapsulationBoundaryPhase:
+            _phase = AFHeaderPhase;
+            break;
+        case AFHeaderPhase:
+            [self.inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+            [self.inputStream open];
+            _phase = AFBodyPhase;
+            break;
+        case AFBodyPhase:
+            [self.inputStream close];
+            _phase = AFFinalBoundaryPhase;
+            break;
+        case AFFinalBoundaryPhase:
+        default:
+            _phase = AFEncapsulationBoundaryPhase;
+            break;
+    }
+    _phaseReadOffset = 0;
+#pragma clang diagnostic pop
+
+    return YES;
+}
 
 
 
 
+```
 
 
+2 AFMultipartBodyStream
 
+```
+继承于NSInputStream，遵守NSStreamDelegate协议.最终将组装成的AFMultipartBodyStream赋值给NSMutableURLRequest去发起网络请求。
+
+numberOfBytesInPacket:自定义的总的字节数
+delay:每个遍历HTTPBodyParts数组时的休眠的时间，默认为0
+inputStream:
+contentLength:内容的长度
+empty:HTTPBodyParts是否为空
+stringEncoding:编码类型
+HTTPBodyParts:存放AFHTTPBodyPart数组
+HTTPBodyPartEnumerator:HTTPBodyParts的枚举器
+currentHTTPBodyPart:当前的AFHTTPBodyPart
+outputStream:输出流
+buffer:缓冲区数据
+setInitialAndFinalBoundaries:设置HTTPBodyParts的分界线。
+appendHTTPBodyPart: 将HTTPBodyPart添加到HTTPBodyParts数组中.
+
+//将HTTPBodyParts中的数据遍历读入到buffer中
+- (NSInteger)read:(uint8_t *)buffer
+        maxLength:(NSUInteger)length
+{
+    if ([self streamStatus] == NSStreamStatusClosed) {
+        return 0;
+    }
+
+    NSInteger totalNumberOfBytesRead = 0;
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wgnu"
+    while ((NSUInteger)totalNumberOfBytesRead < MIN(length, self.numberOfBytesInPacket)) {
+        if (!self.currentHTTPBodyPart || ![self.currentHTTPBodyPart hasBytesAvailable]) {
+        //[self.HTTPBodyPartEnumerator nextObject] 下一个对象
+            if (!(self.currentHTTPBodyPart = [self.HTTPBodyPartEnumerator nextObject])) {
+                break;
+            }
+        } else {
+            NSUInteger maxLength = MIN(length, self.numberOfBytesInPacket) - (NSUInteger)totalNumberOfBytesRead;
+            //将当前的currentHTTPBodyPart数据读入到buffer中
+            NSInteger numberOfBytesRead = [self.currentHTTPBodyPart read:&buffer[totalNumberOfBytesRead] maxLength:maxLength];
+            if (numberOfBytesRead == -1) {
+                self.streamError = self.currentHTTPBodyPart.inputStream.streamError;
+                break;
+            } else {
+                totalNumberOfBytesRead += numberOfBytesRead;
+
+                if (self.delay > 0.0f) {
+                    [NSThread sleepForTimeInterval:self.delay];
+                }
+            }
+        }
+    }
+#pragma clang diagnostic pop
+
+    return totalNumberOfBytesRead;
+}
+
+//获取内容的长度，作为NSMutbleURLRequest的head的Content-Length的值。
+- (unsigned long long)contentLength {
+    unsigned long long length = 0;
+    for (AFHTTPBodyPart *bodyPart in self.HTTPBodyParts) {
+        length += [bodyPart contentLength];
+    }
+
+    return length;
+}
+
+```
+
+3 AFStreamingMultipartFormData
+
+```
+request:NSMutableURLRequest
+stringEncoding:编码类型 
+boundary;分界标识符
+bodyStream:AFMultipartBodyStream类型，最终作为request的HTTPBodyStream。
+
+
+遵守AFMultipartFormData协议，实现对应的协议方法
+
+
+- (BOOL)appendPartWithFileURL:(NSURL *)fileURL
+                         name:(NSString *)name
+                     fileName:(NSString *)fileName
+                     mimeType:(NSString *)mimeType
+                        error:(NSError * __autoreleasing *)error
+{
+    NSParameterAssert(fileURL);
+    NSParameterAssert(name);
+    NSParameterAssert(fileName);
+    NSParameterAssert(mimeType);
+    //0 对应的是否文件存在
+    if (![fileURL isFileURL]) {
+        NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey: NSLocalizedStringFromTable(@"Expected URL to be a file URL", @"AFNetworking", nil)};
+        if (error) {
+            *error = [[NSError alloc] initWithDomain:AFURLRequestSerializationErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
+        }
+
+        return NO;
+    } else if ([fileURL checkResourceIsReachableAndReturnError:error] == NO) {
+        NSDictionary *userInfo = @{NSLocalizedFailureReasonErrorKey: NSLocalizedStringFromTable(@"File URL not reachable.", @"AFNetworking", nil)};
+        if (error) {
+            *error = [[NSError alloc] initWithDomain:AFURLRequestSerializationErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
+        }
+
+        return NO;
+    }
+    NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[fileURL path] error:error];
+    if (!fileAttributes) {
+        return NO;
+    }
+
+    NSMutableDictionary *mutableHeaders = [NSMutableDictionary dictionary];
+    //1 设置AFHTTPBodyPart的header:Content-Disposition Content-Type，作为上传的数据的一部分
+    [mutableHeaders setValue:[NSString stringWithFormat:@"form-data; name=\"%@\"; filename=\"%@\"", name, fileName] forKey:@"Content-Disposition"];
+    [mutableHeaders setValue:mimeType forKey:@"Content-Type"];
+    //2 创建AFHTTPBodyPart
+    AFHTTPBodyPart *bodyPart = [[AFHTTPBodyPart alloc] init];
+    bodyPart.stringEncoding = self.stringEncoding;
+    bodyPart.headers = mutableHeaders;
+    bodyPart.boundary = self.boundary;
+    bodyPart.body = fileURL;
+    bodyPart.bodyContentLength = [fileAttributes[NSFileSize] unsignedLongLongValue];
+    //3 加入bodyStream的数组中
+    [self.bodyStream appendHTTPBodyPart:bodyPart];
+
+    return YES;
+}
+
+- (void)appendPartWithInputStream:(NSInputStream *)inputStream
+                             name:(NSString *)name
+                         fileName:(NSString *)fileName
+                           length:(int64_t)length
+                         mimeType:(NSString *)mimeType
+{
+    NSParameterAssert(name);
+    NSParameterAssert(fileName);
+    NSParameterAssert(mimeType);
+    
+    //1 设置AFHTTPBodyPart的header:Content-Disposition Content-Type，作为上传的数据的一部分
+    NSMutableDictionary *mutableHeaders = [NSMutableDictionary dictionary];
+    [mutableHeaders setValue:[NSString stringWithFormat:@"form-data; name=\"%@\"; filename=\"%@\"", name, fileName] forKey:@"Content-Disposition"];
+    [mutableHeaders setValue:mimeType forKey:@"Content-Type"];
+    //2 创建AFHTTPBodyPart
+    AFHTTPBodyPart *bodyPart = [[AFHTTPBodyPart alloc] init];
+    bodyPart.stringEncoding = self.stringEncoding;
+    bodyPart.headers = mutableHeaders;
+    bodyPart.boundary = self.boundary;
+    bodyPart.body = inputStream;
+    bodyPart.bodyContentLength = (unsigned long long)length;
+    //3 加入bodyStream的数组中
+    [self.bodyStream appendHTTPBodyPart:bodyPart];
+}
+
+- (void)appendPartWithFileData:(NSData *)data
+                          name:(NSString *)name
+                      fileName:(NSString *)fileName
+                      mimeType:(NSString *)mimeType
+{
+    NSParameterAssert(name);
+    NSParameterAssert(fileName);
+    NSParameterAssert(mimeType);
+    //1 设置AFHTTPBodyPart的header:Content-Disposition Content-Type，作为上传的数据的一部分
+    NSMutableDictionary *mutableHeaders = [NSMutableDictionary dictionary];
+    [mutableHeaders setValue:[NSString stringWithFormat:@"form-data; name=\"%@\"; filename=\"%@\"", name, fileName] forKey:@"Content-Disposition"];
+    [mutableHeaders setValue:mimeType forKey:@"Content-Type"];
+
+    [self appendPartWithHeaders:mutableHeaders body:data];
+}
+
+- (void)appendPartWithFormData:(NSData *)data
+                          name:(NSString *)name
+{
+    NSParameterAssert(name);
+    //1 设置AFHTTPBodyPart的header:Content-Disposition 作为上传的数据的一部分 
+    NSMutableDictionary *mutableHeaders = [NSMutableDictionary dictionary];
+    [mutableHeaders setValue:[NSString stringWithFormat:@"form-data; name=\"%@\"", name] forKey:@"Content-Disposition"];
+
+    [self appendPartWithHeaders:mutableHeaders body:data];
+}
+
+- (void)appendPartWithHeaders:(NSDictionary *)headers
+                         body:(NSData *)body
+{
+    NSParameterAssert(body);
+    //1 创建AFHTTPBodyPart
+    AFHTTPBodyPart *bodyPart = [[AFHTTPBodyPart alloc] init];
+    bodyPart.stringEncoding = self.stringEncoding;
+    bodyPart.headers = headers;
+    bodyPart.boundary = self.boundary;
+    bodyPart.bodyContentLength = [body length];
+    bodyPart.body = body;
+    //2 加入bodyStream的数组中
+    [self.bodyStream appendHTTPBodyPart:bodyPart];
+}
+
+//给NSMutableURLRequest设置Content-Type，Content-Length,以及HTTPBodyStream，并返回NSMutableURLRequest进行网络请求。
+
+- (NSMutableURLRequest *)requestByFinalizingMultipartFormData {
+    if ([self.bodyStream isEmpty]) {
+        return self.request;
+    }
+
+    //1 重置开始和结束的分界线
+    [self.bodyStream setInitialAndFinalBoundaries];
+    //2 设置HTTPBodyStream
+    [self.request setHTTPBodyStream:self.bodyStream];
+    //3 设置request的head的Content-Type。从self.boundary的值，我们可以识别上传的数据的分界线。以便服务器正确的取出数据。
+    [self.request setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", self.boundary] forHTTPHeaderField:@"Content-Type"];
+    //4 设置request的head的Content-Length。
+    [self.request setValue:[NSString stringWithFormat:@"%llu", [self.bodyStream contentLength]] forHTTPHeaderField:@"Content-Length"];
+
+    return self.request;
+}
+
+```
 
 ## 参考
 
