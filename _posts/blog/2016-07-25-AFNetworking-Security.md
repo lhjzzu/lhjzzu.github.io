@@ -13,7 +13,7 @@ categories: IOS
 ### https基本原理
 
 
-![](http://img.blog.csdn.net/20160129103223981)
+![](http://7xqijx.com1.z0.glb.clouddn.com/afnetworking-https.png)
 
 
 1. 客户端的浏览器向服务器传送客户端SSL 协议的版本号，加密算法的种类，产生的随机数，以及其他服务器和客户端之间通讯所需要的各种信息。
