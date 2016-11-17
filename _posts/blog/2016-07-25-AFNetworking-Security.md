@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AFNetworking原理:Security(二)
+title: AFNetworking原理:Security(三)
 date: 2016-07-23
 categories: IOS
 
@@ -19,7 +19,8 @@ categories: IOS
 
 * `SSLPinningMode`:服务器信任(server trust)应该对固定的(pinned)SSL证书评估的标准。默认是AFSSLPinningModeNone类型。该属性是个枚举类(AFSSLPinningMode)。
 
-   ```
+  ```
+   
   typedef NS_ENUM(NSUInteger, AFSSLPinningMode) {
     AFSSLPinningModeNone,
     AFSSLPinningModePublicKey,
@@ -28,6 +29,7 @@ categories: IOS
 AFSSLPinningModeNone:不使用固定的证书去评估服务器
 AFSSLPinningModePublicKey:用固定证书的公钥去验证host证书
 AFSSLPinningModeCertificate:用固定证书去验证host证书
+
   
    ```
 
