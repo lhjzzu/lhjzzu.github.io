@@ -11,6 +11,7 @@ categories: IOS
 ## HTTPS
 
 ### https基本原理
+
 ![](http://pic.w2bc.com/upload/201506/12/201506120021500929.png)
 
 
@@ -48,7 +49,9 @@ typedef NS_ENUM(NSUInteger, AFSSLPinningMode) {
 };
 AFSSLPinningModeNone:不使用固定的证书去评估服务器
 AFSSLPinningModePublicKey:用固定证书的公钥去验证host证书
-AFSSLPinningModeCertificate:用固定证书去验证host证书```
+AFSSLPinningModeCertificate:用固定证书去验证host证书
+
+```
 
 
 
