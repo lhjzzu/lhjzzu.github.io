@@ -11,7 +11,7 @@ categories: IOS
 
 ### 简介
 
-`AFSecurityPolic`用来在安全连接时以X.509证书和公共密钥(public keys)来评估服务器信任。在你的应用中添加SSL证书，有助于防止中间人袭击和其他安全漏洞。应用处理敏感的客户数据和财富信息时强烈建议所有的交流在https下进行。
+`AFSecurityPolicy`用来在安全连接时以X.509证书和公共密钥(public keys)来评估服务器信任。在你的应用中添加SSL证书，有助于防止中间人袭击和其他安全漏洞。应用处理敏感的客户数据和财富信息时强烈建议所有的交流在https下进行。
 
 ### 主要的属性和方法
 
@@ -19,9 +19,9 @@ categories: IOS
 
 * `SSLPinningMode`:服务器信任(server trust)应该对固定的(pinned)SSL证书评估的标准。默认是AFSSLPinningModeNone类型。该属性是个枚举类(AFSSLPinningMode)。
 
-  ```
-   
-  typedef NS_ENUM(NSUInteger, AFSSLPinningMode) {
+
+```
+typedef NS_ENUM(NSUInteger, AFSSLPinningMode) {
     AFSSLPinningModeNone,
     AFSSLPinningModePublicKey,
     AFSSLPinningModeCertificate,
@@ -29,9 +29,9 @@ categories: IOS
 AFSSLPinningModeNone:不使用固定的证书去评估服务器
 AFSSLPinningModePublicKey:用固定证书的公钥去验证host证书
 AFSSLPinningModeCertificate:用固定证书去验证host证书
+```
 
-  
-   ```
+
 
 * `pinnedCertificates`:是一个用于评估服务器信任的证书的集合(NSSet),里面每个元素都是一个证书数据(NSData)
 * `allowInvalidCertificates`:是否允许使用一个无效的或者过期的SSL证书信任服务器。默认是NO。
