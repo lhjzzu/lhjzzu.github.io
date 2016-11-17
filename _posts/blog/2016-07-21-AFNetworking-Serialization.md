@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AFNetworking3源码:AFURLRequestSerialization(一)
+title: AFNetworking原理:Serialization(一)
 date: 2016-07-21
 categories: IOS
 
@@ -47,7 +47,7 @@ appendPartWithHeaders:body:(NSData *)body;
                           
 ```
 
-三 AFHTTPRequestSerializer
+**三 AFHTTPRequestSerializer**
 
 * 遵守AFHTTPRequestSerializer协议
 * 属性 & 方法
@@ -223,9 +223,92 @@ mutableObservedChangedKeyPaths:将从外部设置的属性名存储在该集合�
 
 ```
 
+四  AFJSONRequestSerializer
 
 
-四 上传文件相关的类
+```
+writingOptions:写的类型.
+
+协议方法: requestWithMethod:URLString:parameters:error: 
+
+- (NSURLRequest *)requestBySerializingRequest:(NSURLRequest *)request
+                               withParameters:(id)parameters
+                                        error:(NSError *__autoreleasing *)error
+{
+    NSParameterAssert(request);
+    //1 如果为'GET','HEAD','DELETE'请求
+    if ([self.HTTPMethodsEncodingParametersInURI containsObject:[[request HTTPMethod] uppercaseString]]) {
+        return [super requestBySerializingRequest:request withParameters:parameters error:error];
+    }
+
+    NSMutableURLRequest *mutableRequest = [request mutableCopy];
+    //2 设置header
+    [self.HTTPRequestHeaders enumerateKeysAndObjectsUsingBlock:^(id field, id value, BOOL * __unused stop) {
+        if (![request valueForHTTPHeaderField:field]) {
+            [mutableRequest setValue:value forHTTPHeaderField:field];
+        }
+    }];
+    //3 设置Content-Type为application/json
+    if (parameters) {
+        if (![mutableRequest valueForHTTPHeaderField:@"Content-Type"]) {
+            [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        }
+        //4 设置HTTPBody
+        [mutableRequest setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
+    }
+
+    return mutableRequest;
+}
+
+
+
+```
+
+**五  AFPropertyListRequestSerializer**
+
+```
+
+fomart:属性列表的格式,枚举类型NSPropertyListFormat
+writeOptions:写入的类型
+
+协议方法: requestWithMethod:URLString:parameters:error: 
+
+- (NSURLRequest *)requestBySerializingRequest:(NSURLRequest *)request
+                               withParameters:(id)parameters
+                                        error:(NSError *__autoreleasing *)error
+{
+    NSParameterAssert(request);
+    //1 如果为'GET','HEAD','DELETE'请求
+    if ([self.HTTPMethodsEncodingParametersInURI containsObject:[[request HTTPMethod] uppercaseString]]) {
+        return [super requestBySerializingRequest:request withParameters:parameters error:error];
+    }
+
+    NSMutableURLRequest *mutableRequest = [request mutableCopy];
+    //2 设置header
+    [self.HTTPRequestHeaders enumerateKeysAndObjectsUsingBlock:^(id field, id value, BOOL * __unused stop) {
+        if (![request valueForHTTPHeaderField:field]) {
+            [mutableRequest setValue:value forHTTPHeaderField:field];
+        }
+    }];
+    //3 设置Content-Type为application/x-plist
+    if (parameters) {
+        if (![mutableRequest valueForHTTPHeaderField:@"Content-Type"]) {
+            [mutableRequest setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
+        }
+        //4 设置HTTPBody
+        [mutableRequest setHTTPBody:[NSPropertyListSerialization dataWithPropertyList:parameters format:self.format options:self.writeOptions error:error]];
+    }
+
+    return mutableRequest;
+}
+
+
+
+```
+
+
+**六 上传文件相关的类**
+
 
 1 AFHTTPBodyPart
 
@@ -723,9 +806,263 @@ bodyStream:AFMultipartBodyStream类型，最终作为request的HTTPBodyStream。
 
 ```
 
-## 参考
 
-* [WebViewJavascriptBridge源码分析](http://blog.csdn.net/mociml/article/details/47701133)
+## AFURLResponseSerialization
+
+
+一 AFURLResponseSerialization 协议
+
+
+```
+1 AFURLResponseSerialization 也遵守NSSecureCoding,NSCopying协议。
+
+2 AFHTTPResponseSerializer以及它的子类AFJSONResponseSerializer，AFXMLParserResponseSerializer，AFXMLDocumentResponseSerializer，AFPropertyListResponseSerializer，AFImageResponseSerializer，AFCompoundResponseSerializer遵守该协议，并实现该协议的方法responseObjectForResponse:data:error:。同时也遵守NSSecureCoding,NSCopying的协议，并实现对应的协议方法.
+
+3 responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse和NSData来处理NSData，不同的子类，返回不同数据格式的responseObject。
+
+
+```
+
+二 AFHTTPResponseSerializer
+
+```
+stringEncoding:编码类型
+acceptableStatusCodes:能够处理data的状态码范围(200~299)
+acceptableContentTypes:可以接收的内容类型。
+
+
+serializer:类方法
+validateResponse:data:error: 验证Response是否有效
+
+
+- (BOOL)validateResponse:(NSHTTPURLResponse *)response
+                    data:(NSData *)data
+                   error:(NSError * __autoreleasing *)error
+{
+    BOOL responseIsValid = YES;
+    NSError *validationError = nil;
+    //1 验证response本身，是否是可以接收的内容类型
+    if (response && [response isKindOfClass:[NSHTTPURLResponse class]]) {
+        if (self.acceptableContentTypes && ![self.acceptableContentTypes containsObject:[response MIMEType]] &&
+            !([response MIMEType] == nil && [data length] == 0)) {
+
+            if ([data length] > 0 && [response URL]) {
+                NSMutableDictionary *mutableUserInfo = [@{
+                                                          NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedStringFromTable(@"Request failed: unacceptable content-type: %@", @"AFNetworking", nil), [response MIMEType]],
+                                                          NSURLErrorFailingURLErrorKey:[response URL],
+                                                          AFNetworkingOperationFailingURLResponseErrorKey: response,
+                                                        } mutableCopy];
+                if (data) {
+                    mutableUserInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] = data;
+                }
+
+                validationError = AFErrorWithUnderlyingError([NSError errorWithDomain:AFURLResponseSerializationErrorDomain code:NSURLErrorCannotDecodeContentData userInfo:mutableUserInfo], validationError);
+            }
+
+            responseIsValid = NO;
+        }
+        //2 是否是可接收的状态码
+        if (self.acceptableStatusCodes && ![self.acceptableStatusCodes containsIndex:(NSUInteger)response.statusCode] && [response URL]) {
+            NSMutableDictionary *mutableUserInfo = [@{
+                                               NSLocalizedDescriptionKey: [NSString stringWithFormat:NSLocalizedStringFromTable(@"Request failed: %@ (%ld)", @"AFNetworking", nil), [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode], (long)response.statusCode],
+                                               NSURLErrorFailingURLErrorKey:[response URL],
+                                               AFNetworkingOperationFailingURLResponseErrorKey: response,
+                                       } mutableCopy];
+
+            if (data) {
+                mutableUserInfo[AFNetworkingOperationFailingURLResponseDataErrorKey] = data;
+            }
+
+            validationError = AFErrorWithUnderlyingError([NSError errorWithDomain:AFURLResponseSerializationErrorDomain code:NSURLErrorBadServerResponse userInfo:mutableUserInfo], validationError);
+
+            responseIsValid = NO;
+        }
+    }
+
+    if (error && !responseIsValid) {
+        *error = validationError;
+    }
+
+    return responseIsValid;
+}
+
+
+
+```
+
+
+三 AFJSONResponseSerializer
+
+```
+readingOptions: 读json数据的类型,NSJSONReadingOptions枚举类型
+removesKeysWithNullValues:若返回的json数据中的key对应的value为NSNull，是否将键值对移除。默认为NO。
+acceptableContentTypes:可以接收的内容类型, @"application/json", @"text/json", @"text/javascript"
+responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse和NSData来处理NSData
+
+
+- (id)responseObjectForResponse:(NSURLResponse *)response
+                           data:(NSData *)data
+                          error:(NSError *__autoreleasing *)error
+{
+    //1 判断是否是能够处理response
+    if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
+        if (!error || AFErrorOrUnderlyingErrorHasCodeInDomain(*error, NSURLErrorCannotDecodeContentData, AFURLResponseSerializationErrorDomain)) {
+            return nil;
+        }
+    }
+
+    id responseObject = nil;
+    NSError *serializationError = nil;
+    // Workaround for behavior of Rails to return a single space for `head :ok` (a workaround for a bug in Safari), which is not interpreted as valid input by NSJSONSerialization.
+    // See https://github.com/rails/rails/issues/1742
+    BOOL isSpace = [data isEqualToData:[NSData dataWithBytes:" " length:1]];
+    //2 使用NSJSONSerialization，将data转化成json数据
+    if (data.length > 0 && !isSpace) {
+        responseObject = [NSJSONSerialization JSONObjectWithData:data options:self.readingOptions error:&serializationError];
+    } else {
+        return nil;
+    }
+    //3 移除值为Null的键值对
+    if (self.removesKeysWithNullValues && responseObject) {
+        responseObject = AFJSONObjectByRemovingKeysWithNullValues(responseObject, self.readingOptions);
+    }
+
+    if (error) {
+        *error = AFErrorWithUnderlyingError(serializationError, *error);
+    }
+
+    return responseObject;
+}
+```
+
+四 AFXMLParserResponseSerializer
+
+```
+acceptableContentTypes:可以接收的内容类型, @"application/xml", @"text/xml"
+responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse和NSData来处理NSData
+
+- (id)responseObjectForResponse:(NSHTTPURLResponse *)response
+                           data:(NSData *)data
+                          error:(NSError *__autoreleasing *)error
+{   
+    //1 判断是否是能够处理response
+    if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
+        if (!error || AFErrorOrUnderlyingErrorHasCodeInDomain(*error, NSURLErrorCannotDecodeContentData, AFURLResponseSerializationErrorDomain)) {
+            return nil;
+        }
+    }
+    //2 将data转化成XML格式的数据
+    return [[NSXMLParser alloc] initWithData:data];
+}
+
+```
+五 AFXMLDocumentResponseSerializer
+
+```
+acceptableContentTypes:可以接收的内容类型, @"application/xml", @"text/xml"
+responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse和NSData来处理NSData
+
+- (id)responseObjectForResponse:(NSURLResponse *)response
+                           data:(NSData *)data
+                          error:(NSError *__autoreleasing *)error
+{
+    //1 判断是否是能够处理response
+    if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
+        if (!error || AFErrorOrUnderlyingErrorHasCodeInDomain(*error, NSURLErrorCannotDecodeContentData, AFURLResponseSerializationErrorDomain)) {
+            return nil;
+        }
+    }
+
+    //2 将data转化成XML的数据
+    NSError *serializationError = nil;
+    NSXMLDocument *document = [[NSXMLDocument alloc] initWithData:data options:self.options error:&serializationError];
+
+    if (error) {
+        *error = AFErrorWithUnderlyingError(serializationError, *error);
+    }
+
+    return document;
+}
+
+
+```
+六 AFPropertyListResponseSerializer
+
+```
+acceptableContentTypes:可以接收的内容类型, @"application/x-plist"
+responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse和NSData来处理NSData
+
+- (id)responseObjectForResponse:(NSURLResponse *)response
+                           data:(NSData *)data
+                          error:(NSError *__autoreleasing *)error
+{
+    //1 判断是否是能够处理response
+    if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
+        if (!error || AFErrorOrUnderlyingErrorHasCodeInDomain(*error, NSURLErrorCannotDecodeContentData, AFURLResponseSerializationErrorDomain)) {
+            return nil;
+        }
+    }
+
+    id responseObject;
+    NSError *serializationError = nil;
+    //2 将data转化成PropertyList数据
+    if (data) {
+        responseObject = [NSPropertyListSerialization propertyListWithData:data options:self.readOptions format:NULL error:&serializationError];
+    }
+
+    if (error) {
+        *error = AFErrorWithUnderlyingError(serializationError, *error);
+    }
+
+    return responseObject;
+}
+
+
+```
+
+七 AFImageResponseSerializer
+
+```
+acceptableContentTypes:可以接收的内容类型,@"image/tiff", @"image/jpeg", @"image/gif", @"image/png", @"image/ico", @"image/x-icon", @"image/bmp", @"image/x-bmp", @"image/x-xbitmap", @"image/x-win-bitmap"
+imageScale:图片的比例
+automaticallyInflatesResponseImage:是否自动压缩图片数据，默认为YES
+
+responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse和NSData来处理NSData
+
+- (id)responseObjectForResponse:(NSURLResponse *)response
+                           data:(NSData *)data
+                          error:(NSError *__autoreleasing *)error
+{
+    //1 判断是否是能够处理response
+    if (![self validateResponse:(NSHTTPURLResponse *)response data:data error:error]) {
+        if (!error || AFErrorOrUnderlyingErrorHasCodeInDomain(*error, NSURLErrorCannotDecodeContentData, AFURLResponseSerializationErrorDomain)) {
+            return nil;
+        }
+    }
+
+#if TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_WATCH
+    //2 返回图片
+    if (self.automaticallyInflatesResponseImage) {
+        //2.1 返回压缩后的图片
+        return AFInflatedImageFromResponseWithDataAtScale((NSHTTPURLResponse *)response, data, self.imageScale);
+    } else {
+        //2.2 返回正常图片
+        return AFImageWithDataAtScale(data, self.imageScale);
+    }
+#else
+    // Ensure that the image is set to it's correct pixel width and height
+    NSBitmapImageRep *bitimage = [[NSBitmapImageRep alloc] initWithData:data];
+    NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize([bitimage pixelsWide], [bitimage pixelsHigh])];
+    [image addRepresentation:bitimage];
+
+    return image;
+#endif
+
+    return nil;
+}
+
+
+```
 
 
 
