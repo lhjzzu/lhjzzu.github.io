@@ -145,7 +145,7 @@ static id AFPublicKeyForCertificate(NSData *certificate) {
     //5 返回已经被评估的证书的公钥
     allowedPublicKey = (__bridge_transfer id)SecTrustCopyPublicKey(allowedTrust);
 
-_out:
+    _out:
     if (allowedTrust) {
         CFRelease(allowedTrust);
     }
