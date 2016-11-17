@@ -176,21 +176,36 @@ static id AFPublicKeyForCertificate(NSData *certificate) {
 -------
 
 1. 通过证书的数据，创建一个证书。
-SecCertificateRef SecCertificateCreateWithData(CFAllocatorRef __nullable allocator,
+
+   ```
+   SecCertificateRef SecCertificateCreateWithData(CFAllocatorRef __nullable allocator,
     CFDataRef data) 
+  ```
     
 2. 返回X.509证书默认的策略
-SecPolicyRef SecPolicyCreateBasicX509(void)
+  
+   ```
+   SecPolicyRef SecPolicyCreateBasicX509(void)
+   ```
 
 3. 根据传入的证书(certificates)和策略(policies),来创建一个信任评估对象(SecTrustRef).
-OSStatus SecTrustCreateWithCertificates(CFTypeRef certificates,
-    CFTypeRef __nullable policies, SecTrustRef * __nonnull CF_RETURNS_RETAINED trust)
+ 
+   ```
+   OSStatus SecTrustCreateWithCertificates(CFTypeRef certificates,
+       CFTypeRef __nullable policies, SecTrustRef * __nonnull CF_RETURNS_RETAINED trust)
+   ```
 
 4. 评估该trust对象,并生成评估结果（SecTrustResultType）
-OSStatus SecTrustEvaluate(SecTrustRef trust, SecTrustResultType * __nullable result)
+
+   ```
+    OSStatus SecTrustEvaluate(SecTrustRef trust, SecTrustResultType * __nullable result)
+   ```
 
 5. 返回已经被评估的证书的公钥
-SecKeyRef SecTrustCopyPublicKey(SecTrustRef trust)
+
+   ```
+    SecKeyRef SecTrustCopyPublicKey(SecTrustRef trust)
+   ```
 
 -----
 
@@ -282,14 +297,14 @@ static NSArray * AFCertificateTrustChainForServerTrust(SecTrustRef serverTrust) 
 
 ``` 
 
-1. 返回X.509证书默认的策略: SecPolicyCreateBasicX509()
-2. 返回一个被评估的证书链中证书的个数:CFIndex SecTrustGetCertificateCount(SecTrustRef trust)
-3. 从证书链中返回一个证书:SecCertificateRef SecTrustGetCertificateAtIndex(SecTrustRef trust, CFIndex ix)
-4. 根据传入的证书(certificates)和策略(policies),来创建一个信任评估对象(SecTrustRef):OSStatus SecTrustCreateWithCertificates(CFTypeRef certificates,
-    CFTypeRef __nullable policies, SecTrustRef * __nonnull CF_RETURNS_RETAINED trust)
+1. 返回X.509证书默认的策略: `SecPolicyCreateBasicX509()`
+2. 返回一个被评估的证书链中证书的个数:`CFIndex SecTrustGetCertificateCount(SecTrustRef trust)`
+3. 从证书链中返回一个证书:`SecCertificateRef SecTrustGetCertificateAtIndex(SecTrustRef trust, CFIndex ix)`
+4. 根据传入的证书(certificates)和策略(policies),来创建一个信任评估对象(SecTrustRef):OSStatus `SecTrustCreateWithCertificates(CFTypeRef certificates,
+    CFTypeRef __nullable policies, SecTrustRef * __nonnull CF_RETURNS_RETAINED trust)`
     
-5. 评估该trust对象,并生成评估结果（SecTrustResultType）:OSStatus SecTrustEvaluate(SecTrustRef trust, SecTrustResultType * __nullable result)
-6. 返回已经被评估的证书的公钥: SecKeyRef SecTrustCopyPublicKey(SecTrustRef trust)
+5. 评估该trust对象,并生成评估结果（SecTrustResultType）:`OSStatus SecTrustEvaluate(SecTrustRef trust, SecTrustResultType * __nullable result)`
+6. 返回已经被评估的证书的公钥: `SecKeyRef SecTrustCopyPublicKey(SecTrustRef trust)`
 7. 返回公钥数组
 
 
@@ -399,6 +414,7 @@ static NSArray * AFCertificateTrustChainForServerTrust(SecTrustRef serverTrust) 
   ```
    4.1 对由系统传递过来的serverTrust进行信任评估。 
   ```
+  
 * 5 若用固定证书去验证主机证书
 
    ```
@@ -407,6 +423,7 @@ static NSArray * AFCertificateTrustChainForServerTrust(SecTrustRef serverTrust) 
     5.3 从该信任评估对象对象中取出服务器信任的证列表
     5.4 遍历serverCertificates，看本地固有的证书(self.pinnedCertificates)中,是否包含服务器信任的证书
    ```
+   
 * 6 用固定证书的公钥去验证主机证书
    
    ```
@@ -458,40 +475,36 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 
 ```
 
-
 1. `NSURLAuthenticationChallenge`:这个类代表认证挑战了。它提供认证挑战的所有信息，并且有一个方法来表示认证挑战已经完成。
-
-
-```
-内部含有一个`NSURLProtectionSpace`
-
-```
-
+ 
+    ```
+      内部含有一个`NSURLProtectionSpace`
+    ```
 
 2. `NSURLProtectionSpace`:该类代表需要进行身份认证的保护空间。
 
-```
-内部包含认证挑战的信息，例如host，port，protocol，authenticationMethod,serverTrust(信任评估对象,被用于执行X.509证书的信任评估)。
+     
+         内部包含认证挑战的信息，例如host，port，protocol，authenticationMethod,serverTrust(信任评估对象,被用于执行X.509证书的信任评估)。
 
-authenticationMethod:是一个常量字符串，在iOS定义了一系列的对应的常量。其中NSURLAuthenticationMethodServerTrust 代表验证服务器信任。
+         authenticationMethod:是一个常量字符串，在iOS定义了一系列的对应的常量。其中NSURLAuthenticationMethodServerTrust 代表验证服务器信任。
 
-```
 
 3. `NSURLCredential`:这个类代表一个不可变的认证证书。
 4. `NSURLSessionAuthChallengeDisposition`:认证挑战的结果,是一个枚举类，通过completionHandler回调传递给服务器。
 
-```
-typedef NS_ENUM(NSInteger, NSURLSessionAuthChallengeDisposition) {
-NSURLSessionAuthChallengeUseCredential = 0,                                          NSURLSessionAuthChallengePerformDefaultHandling = 1,                              NSURLSessionAuthChallengeCancelAuthenticationChallenge = 2,                       
-NSURLSessionAuthChallengeRejectProtectionSpace = 3,                           
- 
-};
+    
+        typedef NS_ENUM(NSInteger, NSURLSessionAuthChallengeDisposition) {
+        NSURLSessionAuthChallengeUseCredential = 0,
+        NSURLSessionAuthChallengePerformDefaultHandling = 1,  
+        NSURLSessionAuthChallengeCancelAuthenticationChallenge = 2,                                                             
+        NSURLSessionAuthChallengeRejectProtectionSpace = 3,                           
+        };
+        
+        NSURLSessionAuthChallengeUseCredential: 使用指定的证书，证书也许是nil
+        NSURLSessionAuthChallengePerformDefaultHandling:如果这个代理方法没有被实现时，默认的处理。证书参数被忽略
+        NSURLSessionAuthChallengeCancelAuthenticationChallenge: 整个请求被取消，证书参数被忽略。
+        NSURLSessionAuthChallengeRejectProtectionSpace: 这个挑战被拒绝，并且下个认证保护空间被尝试，证书参数被忽略。
 
-NSURLSessionAuthChallengeUseCredential: 使用指定的证书，证书也许是nil
-NSURLSessionAuthChallengePerformDefaultHandling:如果这个代理方法没有被实现时，默认的处理。证书参数被忽略
-NSURLSessionAuthChallengeCancelAuthenticationChallenge: 整个请求被取消，证书参数被忽略。NSURLSessionAuthChallengeRejectProtectionSpace: 这个挑战被拒绝，并且下个认证保护空间被尝试，证书参数被忽略。
-
-```
 
 5. completionHandler:将认证的结果(disposition)，以及生成的认证证书(credential)信息，回调给系统，由系统处理后，传递给服务器。
 
@@ -499,7 +512,7 @@ NSURLSessionAuthChallengeCancelAuthenticationChallenge: 整个请求被取消，
 
 ## 总结:
 
-1 http过程简单理解
+一 http过程简单理解
 
 1. 客户端向服务器传送客户端`SSL的版本号`，`加密算法的种类`，`产生的随机数(Client random)`，以及其他所需信息.
 2. 服务器(有一对公钥和私钥)`确认加密算法`，并发送`公钥证书`，以及服务端`产生的随机数(Server random)`.
@@ -507,9 +520,9 @@ NSURLSessionAuthChallengeCancelAuthenticationChallenge: 整个请求被取消，
 4. 服务器`使用私钥解密获取到客户端发送来的随机数(Premaster secret)`.
 5. 在以后客户端和服务端就使用这个`Premaster secret作为对称密钥`来进行数据的加密来通信。
 
-2 AFSecurityPolicy作用:验证证书是否是有效的，至于加密解密等其他阶段都由系统来完成。
+二 AFSecurityPolicy作用:验证证书是否是有效的，至于加密解密等其他阶段都由系统来完成。
 
-3 在AFNetworking中，AFSecurityPolicy采用默认的安全策略:1 不允许无效的证书 2 验证域名 3 不使用固有的证书和公钥进行验证。(即AFSSLPinningModeNone)。服务器把对应的公钥证书等信息传递给客户端，客户端通过认证挑战的代理方法把对应的信息包装成NSURLAuthenticationChallenge对象，AFNetworking从challenge对象中取出SecTrustRef，并通过AFServerTrustIsValid(SecTrustRef serverTrust)方法对该信任评估对象进行信任评估。
+三 在AFNetworking中，AFSecurityPolicy采用默认的安全策略:1 不允许无效的证书 2 验证域名 3 不使用固有的证书和公钥进行验证。(即AFSSLPinningModeNone)。服务器把对应的公钥证书等信息传递给客户端，客户端通过认证挑战的代理方法把对应的信息包装成NSURLAuthenticationChallenge对象，AFNetworking从challenge对象中取出SecTrustRef，并通过AFServerTrustIsValid(SecTrustRef serverTrust)方法对该信任评估对象进行信任评估。
 
 
 
