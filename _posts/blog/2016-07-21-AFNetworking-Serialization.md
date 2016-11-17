@@ -23,6 +23,7 @@ categories: IOS
  
 ### 二 声明了两个协议
 
+
  #### AFURLRequestSerialization 
  
        
@@ -51,6 +52,7 @@ categories: IOS
 ### 三 AFHTTPRequestSerializer 
 
 #### 遵守AFHTTPRequestSerializer协议
+
 #### 属性 & 方法
 
 ##### 定义
@@ -960,7 +962,9 @@ responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse�
 }
 
 ```
+
 ### AFXMLDocumentResponseSerializer
+
 
 ```
 acceptableContentTypes:可以接收的内容类型, @"application/xml", @"text/xml"
@@ -990,7 +994,9 @@ responseObjectForResponse:data:error: 根据网络请求返回的NSURLResponse�
 
 
 ```
+
 ### AFPropertyListResponseSerializer
+
 
 ```
 acceptableContentTypes:可以接收的内容类型, @"application/x-plist"
