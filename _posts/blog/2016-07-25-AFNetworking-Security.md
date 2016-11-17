@@ -402,34 +402,31 @@ static NSArray * AFCertificateTrustChainForServerTrust(SecTrustRef serverTrust) 
 
 * 2 创建评估策略
 
-  ```
-   2.1 如果验证域名，那么创建SSL策略   
-   2.2 否则，X.509证书默认的策略
-  ```
+        2.1 如果验证域名，那么创建SSL策略   
+        2.2 否则，X.509证书默认的策略
+
   
 * 3  给由服务器传入的serverTrust对象，设置策略:OSStatus SecTrustSetPolicies(SecTrustRef trust, CFTypeRef policies)
 
 * 4 若不使用固定的证书去评估服务器
 
-  ```
-   4.1 对由系统传递过来的serverTrust进行信任评估。 
-  ```
+
+        4.1 对由系统传递过来的serverTrust进行信任评估。 
+
   
 * 5 若用固定证书去验证主机证书
-
-   ```
-    5.1 创建本地固有的证数组
-    5.2 给这个信任评估对象设置一组证书
-    5.3 从该信任评估对象对象中取出服务器信任的证列表
-    5.4 遍历serverCertificates，看本地固有的证书(self.pinnedCertificates)中,是否包含服务器信任的证书
-   ```
+  
+        5.1 创建本地固有的证数组
+        5.2 给这个信任评估对象设置一组证书
+        5.3 从该信任评估对象对象中取出服务器信任的证列表
+        5.4 遍历serverCertificates，看本地固有的证书(self.pinnedCertificates)中,是否包含服务器信任的证书
    
 * 6 用固定证书的公钥去验证主机证书
    
-   ```
-    6.1 获取服务器信任的公列表
-    6.2 遍历服务器信任的公钥列表（publicKeys），看本地固有的证书的公钥列表
-   ``` 
+   
+        6.1 获取服务器信任的公列表
+        6.2 遍历服务器信任的公钥列表（publicKeys），看本地固有的证书的公钥列表
+
    
    
    
