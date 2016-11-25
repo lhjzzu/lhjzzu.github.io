@@ -448,9 +448,179 @@ NSURLConnection在iOS9被宣布弃用,苹果建议使用NSURLSession。AFNetwork
         
         
         
-### AFURLSessionManager核心源码
+### AFURLSessionManager的常量        
         
+1. AFNetworkingTaskDidResumeNotification
+  
+        任务已经开始的通知
+
+2. AFNetworkingTaskDidCompleteNotification
+ 
+        任务已经完成的通知，从URLSession:task:didCompleteWithError:方法中发出。
+
+3. AFNetworkingTaskDidSuspendNotification
+
+        任务已经暂停的通知
         
+4. AFURLSessionDidInvalidateNotification
+
+        会话变无效的通知，在URLSession:didBecomeInvalidWithError:方法中发出。
+        
+5. AFURLSessionDownloadTaskDidFailToMoveFileNotification
+       
+        文件下载完成后，移动到新路径下时移动失败的通知。
+        在URLSession:downloadTask:didFinishDownloadingToURL:方法中发出。
+
+6. AFNetworkingTaskDidCompleteResponseDataKey
+
+        URLSession:task:didCompleteWithError:的error有值的时候，把此时获取的data通过该键放到userInfo字典中，
+        然后通过AFNetworkingTaskDidCompleteNotification通知发送出去。
+               
+7. AFNetworkingTaskDidCompleteSerializedResponseKey
+
+        URLSession:task:didCompleteWithError:的error为nil的时候，把此时处理data而得到的responseObject通过
+        该键放到userInfo字典中，然后通过AFNetworkingTaskDidCompleteNotification通知发送出去。
+
+8. AFNetworkingTaskDidCompleteResponseSerializerKey
+
+        URLSession:task:didCompleteWithError:中把AFURLSessionManager的responseSerializer通过
+        该键放到userInfo字典中，然后通过AFNetworkingTaskDidCompleteNotification通知发送出去。
+
+9. AFNetworkingTaskDidCompleteAssetPathKey
+
+        URLSession:task:didCompleteWithError:中，如果文件下载完成后目的路径存在(self.downloadFileURL)
+        把该路径(self.downloadFileURL)通过该键放到userInfo字典中，然后通过AFNetworkingTaskDidCompleteNotification
+        通知发送出去。
+
+
+10. AFNetworkingTaskDidCompleteErrorKey
+      
+        URLSession:task:didCompleteWithError:中，如果不是下载文件，那么AFURLSessionManager的responseSerializer
+        对得到的data数据进行解析获得JSON数据时，如果出错(serializationError)，就把该错误(serializationError)通过该键放到
+        userInfo字典中，然后通过AFNetworkingTaskDidCompleteNotification通知发送出去。
+
+
+
+### AFURLSessionManager的核心方法      
+
+* dataTaskWithRequest:completionHandler:
+* dataTaskWithRequest:uploadProgress:downloadProgress:completionHandler
+
+
+* uploadTaskWithRequest:fromFile:progress:completionHandler:
+* uploadTaskWithRequest:fromData:progress:completionHandler:
+* uploadTaskWithStreamedRequest:progress:completionHandler:
+
+
+* downloadTaskWithRequest:progress:destination:completionHandler:
+* downloadTaskWithResumeData:progress:destination:completionHandler:
+
+
+
+## AFHTTPSessionManager
+
+### 基本介绍
+
+AFHTTPSessionManager是AFURLSessionManager的子类，在初始化中生成一个请求序列化器(requestSerializer)和响应序列化器(responseSerializer,默认是AFJSONResponseSerializer)，通过requestSerializer来构建请求request(NSMutableURLRequest),然后使用构建好的request的来生成task，最后启动task。如果响应回来的是JSON格式的data，那么使用responseSerializer来进行解析生成reponseObject。如果是下载的任务，那么下载文件的目的路径即为responseObject。
+
+### 普通的GET和POST请求的核心代码
+
+
+     - (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
+                                       URLString:(NSString *)URLString
+                                      parameters:(id)parameters
+                                  uploadProgress:(nullable void (^)(NSProgress *uploadProgress)) uploadProgress
+                                downloadProgress:(nullable void (^)(NSProgress *downloadProgress))
+                                 downloadProgress
+                                         success:(void (^)(NSURLSessionDataTask *, id))success
+                                         failure:(void (^)(NSURLSessionDataTask *, NSError *))failure
+            {
+                NSError *serializationError = nil;
+                //1 构建request
+                NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method 
+                URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString]
+                 parameters:parameters error:&serializationError];
+
+                  if (serializationError) {
+                      if (failure) {
+                          dispatch_async(self.completionQueue ?: dispatch_get_main_queue(), ^{
+                              failure(nil, serializationError);
+                          });
+                      }
+
+                      return nil;
+                  }
+                  //2 构建task
+                  __block NSURLSessionDataTask *dataTask = nil;
+                  dataTask = [self dataTaskWithRequest:request
+                                        uploadProgress:uploadProgress
+                                      downloadProgress:downloadProgress
+                                     completionHandler:^(NSURLResponse * __unused response, id responseObject,
+                                      NSError *error) {
+                      if (error) {
+                          if (failure) {
+                              failure(dataTask, error);
+                          }
+                      } else {
+                          if (success) {
+                              success(dataTask, responseObject);
+                          }
+                      }
+                  }];
+
+                  return dataTask;
+              }
+              
+
+1. 通过requestSerializer来构建普通的request
+2. 根据request来构建task
+
+### 多格式上传数据的请求的核心代码
+
+
+    - (NSURLSessionDataTask *)POST:(NSString *)URLString
+                        parameters:(id)parameters
+         constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+                          progress:(nullable void (^)(NSProgress * _Nonnull))uploadProgress
+                           success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+                           failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
+    {
+        NSError *serializationError = nil;
+        //1 构建多格式上传的request
+        NSMutableURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:@"POST" 
+            URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] 
+            parameters:parameters     constructingBodyWithBlock:block error:&serializationError];
+            if (serializationError) {
+            if (failure) {
+                dispatch_async(self.completionQueue ?: dispatch_get_main_queue(), ^{
+                    failure(nil, serializationError);
+                });
+            }
+
+            return nil;
+        }
+        //2 构建request
+        __block NSURLSessionDataTask *task = [self uploadTaskWithStreamedRequest:request 
+        progress:uploadProgress completionHandler:^(NSURLResponse * __unused response, id responseObject, 
+        NSError *error) {
+            if (error) {
+                if (failure) {
+                    failure(task, error);
+                }
+           } else {
+                if (success) {
+                    success(task, responseObject);
+                }
+            }
+        }];
+        //3 构建request
+        [task resume];
+        return task;
+    }
+
+1. 通过requestSerializer来构建多格式上传的request
+2. 根据request来构建task
+3. 开始task
 
 
 
