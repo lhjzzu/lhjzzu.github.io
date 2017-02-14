@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ios打包--xcodebuild以及xcrun(二)
-date: 2016-04-29
+date: 2016-06-25
 categories: IOS
 
 

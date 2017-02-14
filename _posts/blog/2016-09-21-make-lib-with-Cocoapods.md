@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Cocoapods系列:使用Cocoapods制作静态库(三)
-date: 2016-05-10
+date: 2016-09-21
 categories: IOS
 
 ---

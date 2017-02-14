@@ -1,7 +1,7 @@
 ---
 layout: post
 title: AFNetworking原理:Reachability(二)
-date: 2016-07-21
+date: 2016-11-20
 categories: IOS
 
 ---

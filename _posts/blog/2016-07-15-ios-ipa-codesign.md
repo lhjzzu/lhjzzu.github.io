@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ios打包--ipa包重签(四)
-date: 2016-05-03
+date: 2016-07-15
 categories: IOS
 
 ---
