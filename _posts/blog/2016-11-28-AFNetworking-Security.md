@@ -509,7 +509,8 @@ didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
 
 ## 总结:
 
-一 http过程简单理解
+一 https
+过程简单理解
 
 1. 客户端向服务器传送客户端`SSL的版本号`，`加密算法的种类`，`产生的随机数(Client random)`，以及其他所需信息.
 2. 服务器(有一对公钥和私钥)`确认加密算法`，并发送`公钥证书`，以及服务端`产生的随机数(Server random)`.

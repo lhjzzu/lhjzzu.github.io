@@ -599,7 +599,7 @@ AFHTTPSessionManager是AFURLSessionManager的子类，在初始化中生成一�
 
             return nil;
         }
-        //2 构建request
+        //2 根据request来构建task
         __block NSURLSessionDataTask *task = [self uploadTaskWithStreamedRequest:request 
         progress:uploadProgress completionHandler:^(NSURLResponse * __unused response, id responseObject, 
         NSError *error) {
@@ -613,7 +613,7 @@ AFHTTPSessionManager是AFURLSessionManager的子类，在初始化中生成一�
                 }
             }
         }];
-        //3 构建request
+        //3 开始task
         [task resume];
         return task;
     }
