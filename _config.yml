@@ -2,7 +2,7 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url: http://www.lhjzzu.com
+url: https://lhjzzu.github.io
 date_format: "ordinal"
 title: 刘华健
 subtitle: "好风凭借力"
